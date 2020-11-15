@@ -3,8 +3,19 @@
 class PostController extends Post {
 
 public function index($response , $request){
-	$posts = Post::all();
-		return $response->json($posts);
+	// $posts = Post::all();
+	// 	return $response->json($posts);
+	return $response->view('index' , ['name' => 'Ahmed Hashem']);
+}
+public function posts($response , $request){
+	// $posts = Post::all();
+	// 	return $response->json($posts);
+	return $response->view('posts');
+}
+public function posts_details($response , $request){
+	// $posts = Post::all();
+	// 	return $response->json($posts);
+	return $response->view('posts_details');
 }
 
 public function store($response , $request){
