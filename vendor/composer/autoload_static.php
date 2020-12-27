@@ -21,6 +21,14 @@ class ComposerStaticInitceae795e5e0c3be41956ad9bbf836f7d
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
+        'R' => 
+        array (
+            'RstGroup\\HttpMethodOverride\\' => 28,
+        ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -35,6 +43,14 @@ class ComposerStaticInitceae795e5e0c3be41956ad9bbf836f7d
         'Symfony\\Polyfill\\Ctype\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'RstGroup\\HttpMethodOverride\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/rstgroup/http-method-override/src',
+        ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
         ),
     );
 
