@@ -6,8 +6,8 @@ class AhmedController
     {
         $posts = [
             [
-                "title" => "Ahmed",
-                "desc" => "Hashem"
+                "title" => "Bota",
+                "desc" => "Gomaa"
             ]
         ];
         return $response->view('index', ["posts" => $posts]);
