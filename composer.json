@@ -1,5 +1,6 @@
 {
     "require": {
-        "rstgroup/http-method-override": "^2.1"
+        "vlucas/phpdotenv": "^5.2",
+        "twig/twig": "^3.0"
     }
 }

@@ -11,10 +11,10 @@ class Response
         $GLOBALS['data'] = array($parm => $data);
     }
 
-    public static function view($parm, $data = false)
+    public static function view($parm, $data = array(false))
     {
 
-        if (file_exists(dirname(dirname(__FILE__)) . '/views/' . $parm . '.zte.html')) {
+        if (file_exists(dirname(dirname(__FILE__)) . '/views/' . $parm . '.zte.twig')) {
 
             $loader = new \Twig\Loader\FilesystemLoader('views');
 
@@ -27,19 +27,16 @@ class Response
             ]);
 
             $twig->setLexer($lexer);
-
-            if (!$data) {
-
+            if (!isset($data)) {
                 if (!empty($GLOBALS['data'])) {
-
-                    echo $twig->render($parm . '.zte.html', $GLOBALS['data'][$parm]);
+                    echo 'asas';
+                    echo $twig->render($parm . '.zte.twig', $GLOBALS['data'][$parm]);
                 } else {
 
-                    echo $twig->render($parm . '.zte.html');
+                    echo $twig->render($parm . '.zte.twig');
                 }
             } else {
-
-                echo $twig->render($parm . '.zte.html');
+                echo $twig->render($parm . '.zte.twig', $data);
             }
         }
     }

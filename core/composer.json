@@ -1,7 +1,0 @@
-{
-    "require": {
-        "vlucas/phpdotenv": "^5.2",
-        "twig/twig": "^3.0",
-        "symfony/asset": "^5.1"
-    }
-}
