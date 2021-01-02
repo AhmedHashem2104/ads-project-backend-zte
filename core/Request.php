@@ -145,7 +145,7 @@ class Request extends DB
     return true;
   }
 
-  private function addError($item, $error)
+  private static function addError($item, $error)
   {
     array_push(self::$errors, array('field' => $item, 'message' => $error));
   }
