@@ -1,75 +1,79 @@
 <?php
 
-    /**
-    * The home page model
-    */
-    class Auth extends Controller
+namespace Auth;
+
+use Controller\Controller;
+
+use DB\DB;
+
+use Response\Response;
+
+/**
+ * The home page model
+ */
+class Auth extends Controller
+{
+
+    public function class()
     {
 
-    	public function class(){
+        return get_class($this);
+    }
 
-    		return get_class($this);
-            
-    	}
+    public function table()
+    {
 
-        public function table(){
+        return 'users';
+    }
 
-        	return 'users';
-        }
+    public function hash($data)
+    {
 
-        public function hash($data){
+        $password = password_hash($data, PASSWORD_DEFAULT);
 
-            $password = password_hash($data , PASSWORD_DEFAULT);
+        return $password;
+    }
 
-            return $password;
-
-        } 
-
-        public function invoke($email , $password){
+    public function invoke($email, $password)
+    {
 
         $data = DB::rawOneQuery("SELECT * FROM users WHERE email = '$email' LIMIT 1");
-        
-        if ($data){
 
-        $id = $data['id'];
+        if ($data) {
 
-        $password_check = $data['password'];
+            $id = $data['id'];
 
-        $verify = password_verify($password , $password_check);
-        
-if ($verify){
+            $password_check = $data['password'];
 
-        $token = password_hash($email , PASSWORD_DEFAULT) . '!' . password_hash($email , PASSWORD_DEFAULT);
+            $verify = password_verify($password, $password_check);
 
-        $query = DB::updateQuery("UPDATE users SET token = '$token' WHERE email = '$email' and id = '$id' and password = '$password_check'");
+            if ($verify) {
 
-        if ($query){
+                $token = password_hash($email, PASSWORD_DEFAULT) . '!' . password_hash($email, PASSWORD_DEFAULT);
 
-        return array('Type' => 'Bearer' , 'Token' => $token);
+                $query = DB::updateQuery("UPDATE users SET token = '$token' WHERE email = '$email' and id = '$id' and password = '$password_check'");
 
+                if ($query) {
+
+                    return array('Type' => 'Bearer', 'Token' => $token);
+                } else {
+                    http_response_code(401);
+                    die(Response::json(array('message' => 'Fail')));
+                }
+            }
         }
 
-        else{
-http_response_code(401);
-        die(Response::json(array('message' => 'Fail')));
-
-        }
-
-        }
-    }
-
-http_response_code(400);
+        http_response_code(400);
         die(Response::json(array('message' => 'Wrong Email or Password')));
+    }
 
-        }
+    public function authenticate()
+    {
 
-        public function authenticate(){
-
-         $headers = null;
+        $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        }
-        else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
@@ -81,35 +85,32 @@ http_response_code(400);
             }
         }
 
-    // HEADER: Get the access token from the header
-    if (!empty($headers)) {
-        if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-            $token = $matches[1];
+        // HEADER: Get the access token from the header
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                $token = $matches[1];
 
-$data = DB::rawOneQuery("SELECT * FROM users WHERE token = '$token'");
+                $data = DB::rawOneQuery("SELECT * FROM users WHERE token = '$token'");
 
-        if (!is_array($data)){
-http_response_code(401);
-die(json_encode(array('Access' => 'Failed' , 'Token' => 'Invalid Personal API Token')));
+                if (!is_array($data)) {
+                    http_response_code(401);
+                    die(json_encode(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
+                }
 
-}
-
-return Response::json($data);          
-
+                return Response::json($data);
+            }
         }
+        http_response_code(401);
+        die(json_encode(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
     }
-http_response_code(401);
-    die(json_encode(array('Access' => 'Failed' , 'Token' => 'Requied Personal API')));
 
-        }
+    public function revoke()
+    {
 
-    public function revoke(){
-
-      $headers = null;
+        $headers = null;
         if (isset($_SERVER['Authorization'])) {
             $headers = trim($_SERVER["Authorization"]);
-        }
-        else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
+        } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
             $headers = trim($_SERVER["HTTP_AUTHORIZATION"]);
         } elseif (function_exists('apache_request_headers')) {
             $requestHeaders = apache_request_headers();
@@ -121,35 +122,29 @@ http_response_code(401);
             }
         }
 
-    // HEADER: Get the access token from the header
-    if (!empty($headers)) {
-        if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-            $token = $matches[1];
+        // HEADER: Get the access token from the header
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                $token = $matches[1];
 
-$data = DB::rawQuery("SELECT * FROM users WHERE token = '$token'");
+                $data = DB::rawQuery("SELECT * FROM users WHERE token = '$token'");
 
-        if (!is_array($data)){
-http_response_code(400);
-die(json_encode(array('Access' => 'Failed' , 'Token' => 'Invalid Personal API Token')));
+                if (!is_array($data)) {
+                    http_response_code(400);
+                    die(json_encode(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
+                }
+                $email = $data['email'];
+                $id = $data['id'];
 
-}
-$email = $data['email'];
-$id = $data['id'];
+                $query = DB::updateQuery("UPDATE users SET token = 'NULL' WHERE email = '$email' and id = '$id' and token = '$token'");
 
-$query = DB::updateQuery("UPDATE users SET token = 'NULL' WHERE email = '$email' and id = '$id' and token = '$token'");
-
-if ($query){
-    return true;
-}
-return false;         
-
+                if ($query) {
+                    return true;
+                }
+                return false;
+            }
         }
+        http_response_code(401);
+        die(json_encode(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
     }
-http_response_code(401);
-    die(json_encode(array('Access' => 'Failed' , 'Token' => 'Requied Personal API')));
-
-    }
-
-
-
-    }
+}

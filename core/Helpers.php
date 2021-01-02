@@ -1,5 +1,4 @@
 <?php
-
 // Compress image
 function compress($source, $destination, $quality)
 {

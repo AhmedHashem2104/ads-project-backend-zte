@@ -1,10 +1,13 @@
 <?php
+
+namespace Post;
+
+use Controller\Controller;
+
 class Post extends Controller
 {
-	public function class(){
-		return get_class();
+	public function table()
+	{
+		return "posts";
 	}
-    public function table(){
-    	return 'posts';
-    }
 }

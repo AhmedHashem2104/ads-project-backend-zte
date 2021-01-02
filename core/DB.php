@@ -1,465 +1,566 @@
-<?php 
-class DB extends Database{
-private $id;
-private $value;
-private $table;
-private $counter = 0;
-// Select One Row.
-public function rawOneQuery($sql){
-$query = $this->connect()->query($sql);
-if ($query){
-if ($query->rowCount() == 1){
-$row = $query->fetch(PDO::FETCH_ASSOC);
-return $row;
-}
-return false;
-}
-else{
-return false;
-}
-}
-// Select One Or More Than One Row.
-public function rawQuery($sql){
-$query = $this->connect()->query($sql);
-if ($query){
-if ($query->rowCount() > 0){
-while($row = $query->fetch(PDO::FETCH_ASSOC)){
-$data[] = $row;
-}
-return $data;
-}
-else{
-return false;
-}
-}
-else{
-return false;
-}
-}
-// Update Onr Or More Than One Row.
-public function updateQuery($sql){
-$query = $this->connect()->query($sql);
-if ($query){
-return true;
-}
-else{
-return false;
-}
-}
-// Delete Onr Or More Than One Row.
-public function deleteQuery($sql){
-$query = $this->connect()->query($sql);
-if ($query){
-return true;
-}
-else{
-return false;
-}
-}
-// Query Builder.
-public function query(){
-$query = "SELECT * FROM ".$this->class()::table();
-$this->sql = $query;
-return $this;
-}
-// Select All Data From Table.
-public function select($table){
-$query = "SELECT * FROM ".$table;
-$this->sql = $query;
-return $this;
-}
-// Where Conditions in SQL.
-public function where($parameter , $operator , $value){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." " . $operator . " '" . $value . "'";
-$this->counter++;
-}
-else{
-  $this->sql .= " AND ".$parameter." " . $operator . " '" . $value . "'";    
-}
-return $this;
-}
-// orWhere Conditions in SQL.
-public function orWhere($parameter , $operator , $value){
-$this->sql .= " OR ".$parameter." " . $operator . " '" . $value . "'";
-return $this;
-}
-// whereNot Conditions in SQL.
-public function whereNot($parameter , $operator , $value){
-if ($this->counter == 0){
-$this->sql .= " WHERE NOT ".$parameter." " . $operator . " '" . $value . "'";
-$this->counter++;
-}
-else{
-$this->sql .= " AND NOT ".$parameter." " . $operator . " '" . $value . "'";
-}
-return $this;
-}
-// orWhereNot Conditions in SQL.
-public function orWhereNot($parameter , $operator , $value){
-$this->sql .= " OR NOT ".$parameter." " . $operator . " '" . $value . "'";
-return $this;
-}
-// whereNull Conditions in SQL.
-public function whereNull($parameter){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." IS NULL ";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$parameter." IS NULL ";
-}
-return $this;
-}
-// whereNotNull Conditions in SQL.
-public function whereNotNull($parameter){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." IS NOT NULL ";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$parameter." IS NOT NULL ";
-}
-return $this;
-}
-// orWhereNull Conditions in SQL.
-public function orWhereNull($parameter){
-$this->sql .= " OR ".$parameter." IS NULL";
-return $this;
-}
-// orWhereNotNull Condtions in SQL.
-public function orWhereNotNull($parameter){
-$this->sql .= " OR ".$parameter." IS NOT NULL";
-return $this;
-}
-// whereLike Conditions in SQL.
-public function whereLike($operator1 , $operator2){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$operator1." LIKE '" . $operator2 . "'";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$operator1." LIKE '" . $operator2 . "'";
-}
-return $this;
-}
-// orWhereLike Conditions in SQL.
-public function orWhereLike($operator1 , $operator2){
-$this->sql .= " OR ".$operator1." LIKE '" . $operator2 . "'";
-return $this;
-}
-// whereNotLike Conditions in SQL.
-public function whereNotLike($operator1 , $operator2){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$operator1." NOT LIKE '" . $operator2 . "'";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$operator1." NOT LIKE '" . $operator2 . "'";
-}
-return $this;
-}
-// orWhereNotLike Conditions in SQL.
-public function orWhereNotLike($operator1 , $operator2){
-$this->sql .= " OR ".$operator1." NOT LIKE '" . $operator2 . "'";
-return $this;
-}
-// whereBetween Conditions in SQL.
-public function whereBetween($parameter , $operator1 , $operator2){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$parameter." BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
-}
-return $this;
-}
-// orWhere Between Conditions in SQL.
-public function orWhereBetween($parameter , $operator1 , $operator2){
-$this->sql .= " OR ".$parameter." BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
-return $this;
-}
-// whereIn Conditions in SQL.
-public function whereIn($parameter , $operators){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-$this->counter++;
-}
-else{
-$this->sql .= " AND ".$parameter." IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-}
-return $this;
-}
-// orWhereIn Conditions in SQL.
-public function orWhereIn($parameter , $operators){
-$this->sql .= " OR ".$parameter." IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-return $this;
-}
-// whereNotIn Conditions in SQL.
-public function whereNotIn($parameter , $operators){
-if ($this->counter == 0){
-$this->sql .= " WHERE ".$parameter." NOT IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-$this->counter++;
-}
-else{
-$this->sql = " AND ".$parameter." NOT IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-}
-return $this;
-}
-// orWhereNotIn Conditions in SQL.
-public function orWhereNotIn($parameter , $operators){
-$this->sql .= " OR ".$parameter." NOT IN (";
-foreach($operators as $operator){
-if (!next($operators)){
-$this->sql .= "'" . $operator . "'";
-}
-else{
-$this->sql .= "'" . $operator . "' ,";
-}
-}
-$this->sql .= ")";
-return $this;
-}
-// Ordering in SQL.
-public function orderBy($parameter , $type = false){
-if ($type){
-$this->sql .= " ORDER BY " . $parameter . " " . $type;
-}
-else{
-$this->sql .= " ORDER BY " . $parameter;
-}
-return $this;
-}
-// Get All Data From Database.
-public function get(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql']);
-if (!$query){
-return false;
-}
-if ($query->rowCount() > 0){
-while($row = $query->fetch(PDO::FETCH_ASSOC)){
-$data[] = $row;
-}
-return $data;
-}
-else{
-return array();
-}
-}
-// Fetch All Data From Database.
-public function fetch(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql']);
-if (!$query){
-return false;
-}
-if ($query->rowCount() > 0){
-while($row = $query->fetch(PDO::FETCH_ASSOC)){
-$data[] = $row;
-}
-return $data;
-}
-else{
-return array();
-}
-}
-// Fetch All Data From Database.
-public function fetchAll(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql']);
-if (!$query){
-return false;
-}
-if ($query->rowCount() > 0){
-while($row = $query->fetch(PDO::FETCH_ASSOC)){
-$data[] = $row;
-}
-return $data;
-}
-else{
-return array();
-}
-}
-// Fetch One Row From Database.
-public function fetchOne(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql'] . " LIMIT 1 ");
-if (!$query){
-return false;
-}
-if ($query->rowCount() == 1){
-$row = $query->fetch(PDO::FETCH_ASSOC);
-return $row;
-}
-else{
-return array();
-}
-}
-// Fetch First Row Data From Database.
-public function first(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql'] . " LIMIT 1 ");
-if (!$query){
-return false;
-}
-if ($query->rowCount() == 1){
-$row = $query->fetch(PDO::FETCH_ASSOC);
-return $row;
-}
-else{
-return array();
-}
-}
-// Fetch Last Row Data From Database.
-public function last(){
-$array = (array)$this;
-$query = $this->connect()->query($array['sql'] . " ORDER BY id DESC LIMIT 1 ");
-if (!$query){
-return false;
-}
-if ($query->rowCount() == 1){
-$row = $query->fetch(PDO::FETCH_ASSOC);
-return $row;
-}
-else{
-return array();
-}
-}
-//Create New Row In Database.
-public function creator($table,$fields){
-$this->table = $table;
-$implodeFields=implode(',' , array_keys($fields));
-$implodePlaceholder=implode(", :" , array_keys($fields));
-try {
-$sql="INSERT INTO ".$this->table." (".$implodeFields.") VALUES(:".$implodePlaceholder.")";
-$stmt =$this->connect()->prepare($sql); 
-foreach ($fields as $key=>$value) {
-$stmt->bindValue(':'.$key,$value);
-}
-$stmt->execute();
-}
-catch(PDOException $e) {
-return false;
-}
-return $fields;
-}
-//Delete One Or More Than One Row From Database.
-public function remove($table , $id = false , $value = false){
-$this->table = $table;
-$this->id = $id;
-$this->value = $value;
-if ($this->id and !$this->value){
-$sql="DELETE FROM ".$this->table." WHERE id = ".$this->id;
-}
-else if ($this->id and $this->value){
-$sql="DELETE FROM ".$this->table." WHERE " . $this->id . " = ".$this->value;
-}
-else{
-$sql="DELETE FROM ".$this->table;
-}
-$stmt=$this->connect()->prepare($sql);
-$stmt->bindValue(":",$this->id);
-$stmt->execute();
-return $stmt;
-}
-//Update One Or More Than One Row In Database.
-public function modify($table , $fields , $id = false , $value = false){
-$this->table = $table;
-$this->id = $id;
-$this->value = $value;
-$st="";
-$counter=1;
-$total_fields = count($fields);
-foreach ($fields as $key => $value){
-if($counter===$total_fields)
+<?php
+
+namespace DB;
+
+use Database\Database;
+
+use PDO;
+
+use PDOException;
+
+class DB extends Database
 {
-$set="$key = :".$key;
-$st=$st.$set;
+  private static $instance = array('sql' => array(), 'counter' => 0, 'table' => '', 'value' => '', 'id' => '');
+  // Select One Row.
+  public static function rawOneQuery($sql)
+  {
+    $query = Database::connect()->query($sql);
+    if ($query) {
+      if ($query->rowCount() == 1) {
+        $row = $query->fetch(PDO::FETCH_ASSOC);
+        return $row;
+      }
+      return false;
+    } else {
+      return false;
+    }
+  }
+  // Select One Or More Than One Row.
+  public static function rawQuery($sql)
+  {
+    $query = Database::connect()->query($sql);
+    if ($query) {
+      if ($query->rowCount() > 0) {
+        while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+          $data[] = $row;
+        }
+        return $data;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+  // Update Onr Or More Than One Row.
+  public static function updateQuery($sql)
+  {
+    $query = Database::connect()->query($sql);
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // Delete Onr Or More Than One Row.
+  public static function deleteQuery($sql)
+  {
+    $query = Database::connect()->query($sql);
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  // Query Builder.
+  public static function query()
+  {
+
+    self::$instance['table'] = get_called_class()::table();
+    $query = "SELECT * FROM " . self::$instance['table'];
+    self::$instance['sql'][] = $query;
+    $self = new self;
+    return $self;
+  }
+  // Select All Data From Table.
+  public static function select($table)
+  {
+    self::$instance['table'] = get_called_class()::table();
+    $query = "SELECT * FROM " . self::$instance['table'];
+    self::$instance['sql'][] = $query;
+    $self = new self;
+    return $self;
+  }
+  // Where Conditions in SQL.
+  public static function where($parameter, $operator, $value)
+  {
+    self::$instance['id'] = $value;
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $parameter . " " . $operator . " '" . $value . "'";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhere Conditions in SQL.
+  public static function orWhere($parameter, $operator, $value)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " " . $operator . " '" . $value . "'";
+    $self = new self;
+    return $self;
+  }
+  // whereNot Conditions in SQL.
+  public static function whereNot($parameter, $operator, $value)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE NOT " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND NOT " . $parameter . " " . $operator . " '" . $value . "'";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereNot Conditions in SQL.
+  public static function orWhereNot($parameter, $operator, $value)
+  {
+    self::$instance['sql'][] = " OR NOT " . $parameter . " " . $operator . " '" . $value . "'";
+    $self = new self;
+    return $self;
+  }
+  // whereNull Conditions in SQL.
+  public static function whereNull($parameter)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " IS NULL ";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $parameter . " IS NULL ";
+    }
+    $self = new self;
+    return $self;
+  }
+  // whereNotNull Conditions in SQL.
+  public static function whereNotNull($parameter)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " IS NOT NULL ";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $parameter . " IS NOT NULL ";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereNull Conditions in SQL.
+  public static function orWhereNull($parameter)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " IS NULL";
+    $self = new self;
+    return $self;
+  }
+  // orWhereNotNull Condtions in SQL.
+  public static function orWhereNotNull($parameter)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " IS NOT NULL";
+    $self = new self;
+    return $self;
+  }
+  // whereLike Conditions in SQL.
+  public static function whereLike($operator1, $operator2)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $operator1 . " LIKE '" . $operator2 . "'";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $operator1 . " LIKE '" . $operator2 . "'";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereLike Conditions in SQL.
+  public static function orWhereLike($operator1, $operator2)
+  {
+    self::$instance['sql'][] = " OR " . $operator1 . " LIKE '" . $operator2 . "'";
+    $self = new self;
+    return $self;
+  }
+  // whereNotLike Conditions in SQL.
+  public static function whereNotLike($operator1, $operator2)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $operator1 . " NOT LIKE '" . $operator2 . "'";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $operator1 . " NOT LIKE '" . $operator2 . "'";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereNotLike Conditions in SQL.
+  public static function orWhereNotLike($operator1, $operator2)
+  {
+    self::$instance['sql'][] = " OR " . $operator1 . " NOT LIKE '" . $operator2 . "'";
+    $self = new self;
+    return $self;
+  }
+  // whereBetween Conditions in SQL.
+  public static function whereBetween($parameter, $operator1, $operator2)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $parameter . " BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhere Between Conditions in SQL.
+  public static function orWhereBetween($parameter, $operator1, $operator2)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " BETWEEN '" . $operator1 . "' AND '" . $operator2 . "'";
+    $self = new self;
+    return $self;
+  }
+  // whereIn Conditions in SQL.
+  public static function whereIn($parameter, $operators)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " IN (";
+      foreach ($operators as $operator) {
+        if (!next($operators)) {
+          self::$instance['sql'][] = "'" . $operator . "'";
+        } else {
+          self::$instance['sql'][] = "'" . $operator . "' ,";
+        }
+      }
+      self::$instance['sql'][] = ")";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'][] = " AND " . $parameter . " IN (";
+      foreach ($operators as $operator) {
+        if (!next($operators)) {
+          self::$instance['sql'][] = "'" . $operator . "'";
+        } else {
+          self::$instance['sql'][] = "'" . $operator . "' ,";
+        }
+      }
+      self::$instance['sql'][] = ")";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereIn Conditions in SQL.
+  public static function orWhereIn($parameter, $operators)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " IN (";
+    foreach ($operators as $operator) {
+      if (!next($operators)) {
+        self::$instance['sql'][] = "'" . $operator . "'";
+      } else {
+        self::$instance['sql'][] = "'" . $operator . "' ,";
+      }
+    }
+    self::$instance['sql'][] = ")";
+    $self = new self;
+    return $self;
+  }
+  // whereNotIn Conditions in SQL.
+  public static function whereNotIn($parameter, $operators)
+  {
+    if (self::$instance['counter'] == 0) {
+      self::$instance['sql'][] = " WHERE " . $parameter . " NOT IN (";
+      foreach ($operators as $operator) {
+        if (!next($operators)) {
+          self::$instance['sql'][] = "'" . $operator . "'";
+        } else {
+          self::$instance['sql'][] = "'" . $operator . "' ,";
+        }
+      }
+      self::$instance['sql'][] = ")";
+      self::$instance['counter']++;
+    } else {
+      self::$instance['sql'] = " AND " . $parameter . " NOT IN (";
+      foreach ($operators as $operator) {
+        if (!next($operators)) {
+          self::$instance['sql'][] = "'" . $operator . "'";
+        } else {
+          self::$instance['sql'][] = "'" . $operator . "' ,";
+        }
+      }
+      self::$instance['sql'][] = ")";
+    }
+    $self = new self;
+    return $self;
+  }
+  // orWhereNotIn Conditions in SQL.
+  public static function orWhereNotIn($parameter, $operators)
+  {
+    self::$instance['sql'][] = " OR " . $parameter . " NOT IN (";
+    foreach ($operators as $operator) {
+      if (!next($operators)) {
+        self::$instance['sql'][] = "'" . $operator . "'";
+      } else {
+        self::$instance['sql'][] = "'" . $operator . "' ,";
+      }
+    }
+    self::$instance['sql'][] = ")";
+    $self = new self;
+    return $self;
+  }
+  // Ordering in SQL.
+  public static function orderBy($parameter, $type = false)
+  {
+    if ($type) {
+      self::$instance['sql'][] = " ORDER BY " . $parameter . " " . $type;
+    } else {
+      self::$instance['sql'][] = " ORDER BY " . $parameter;
+    }
+    $self = new self;
+    return $self;
+  }
+  // Get All Data From Database.
+  public static function get()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql);
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() > 0) {
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+      }
+      return $data;
+    } else {
+      return array();
+    }
+  }
+  // Fetch All Data From Database.
+  public static function fetch()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql);
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() > 0) {
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+      }
+      return $data;
+    } else {
+      return array();
+    }
+  }
+  // Fetch All Data From Database.
+  public static function fetchAll()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql);
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() > 0) {
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+      }
+      return $data;
+    } else {
+      return array();
+    }
+  }
+  // Fetch One Row From Database.
+  public static function fetchOne()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql . " LIMIT 1");
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() == 1) {
+      $row = $query->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    } else {
+      return array();
+    }
+  }
+  // Fetch First Row Data From Database.
+  public static function first()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql . " ORDER BY id LIMIT 1");
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() == 1) {
+      $row = $query->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    } else {
+      return array();
+    }
+  }
+  // Fetch Last Row Data From Database.
+  public static function last()
+  {
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql . " ORDER BY id DESC LIMIT 1");
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() == 1) {
+      $row = $query->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    } else {
+      return array();
+    }
+  }
+  //Create New Row In Database.
+  public static function creator($table, $fields)
+  {
+    $implodeFields = implode(',', array_keys($fields));
+    $implodePlaceholder = implode(", :", array_keys($fields));
+    try {
+      $sql = "INSERT INTO " . $table . " (" . $implodeFields . ") VALUES(:" . $implodePlaceholder . ")";
+      $stmt = Database::connect()->prepare($sql);
+      foreach ($fields as $key => $value) {
+        $stmt->bindValue(':' . $key, $value);
+      }
+      $stmt->execute();
+    } catch (PDOException $e) {
+      return false;
+    }
+    return $fields;
+  }
+  //Delete One Or More Than One Row From Database.
+  public static function remove($table, $id = false, $value = false)
+  {
+    self::$instance['table'] = $table;
+    self::$instance['id'] = $id;
+    self::$instance['value'] = $value;
+    if (self::$instance['id'] and !self::$instance['value']) {
+      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE id = " . self::$instance['id'];
+    } else if (self::$instance['id'] and self::$instance['value']) {
+      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
+    } else {
+      $sql = "DELETE FROM " . self::$instance['table'];
+    }
+    $stmt = Database::connect()->prepare($sql);
+    $stmt->bindValue(":", self::$instance['id']);
+    $stmt->execute();
+    return $stmt;
+  }
+  //Update One Or More Than One Row In Database.
+  public function update($fields)
+  {
+    unset($fields->id);
+    $st = "";
+    $counter = 1;
+    $fields = (array)$fields;
+    $total_fields = count($fields);
+    foreach ($fields as $key => $value) {
+      if ($counter === $total_fields) {
+        $set = "$key = :" . $key;
+        $st = $st . $set;
+      } else {
+        $set = "$key = :" . $key . ", ";
+        $st = $st . $set;
+        $counter++;
+      }
+    }
+    $query = "UPDATE " . self::$instance['table'] . " SET " . $st;
+    self::$instance['sql'][0] = $query;
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $stmt = Database::connect()->prepare($query);
+    foreach ($fields as $key => $value) {
+      $stmt->bindValue(':' . $key, $value);
+    }
+    $stmt->execute();
+    $string = "SELECT * FROM " . self::$instance['table'];
+    if (!self::$instance['value']) {
+      $string .= " WHERE id = " . self::$instance['id'];
+    } else {
+      $string .= " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
+    }
+    $query = DB::connect()->query($string . " LIMIT 1 ");
+    if ($query->rowCount() == 1) {
+      $row = $query->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+  }
+  //Update One Or More Than One Row In Database.
+  public static function modify($table, $fields, $id = false, $value = false)
+  {
+    self::$instance['table'] = $table;
+    self::$instance['id'] = $id;
+    self::$instance['value'] = $value;
+    $st = "";
+    $counter = 1;
+    $total_fields = count($fields);
+    foreach ($fields as $key => $value) {
+      if ($counter === $total_fields) {
+        $set = "$key = :" . $key;
+        $st = $st . $set;
+      } else {
+        $set = "$key = :" . $key . ", ";
+        $st = $st . $set;
+        $counter++;
+      }
+    }
+    $sql = " ";
+    $sql .= "UPDATE " . self::$instance['table'] . " SET " . $st;
+    if (self::$instance['id'] and !self::$instance['value']) {
+      $sql .= " WHERE id = " . self::$instance['id'];
+    } else if (self::$instance['id'] and self::$instance['value']) {
+      $sql .= " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
+    } else {
+      $sql .= " WHERE id = " . self::$instance['id'];
+    }
+    $stmt = Database::connect()->prepare($sql);
+    foreach ($fields as $key => $value) {
+      $stmt->bindValue(':' . $key, $value);
+    }
+    $stmt->execute();
+    $string = "SELECT * FROM " . $table;
+    if (!self::$instance['value']) {
+      $string .= " WHERE id = " . self::$instance['id'];
+    } else {
+      $string .= " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
+    }
+    $query = Database::connect()->query($string . " LIMIT 1 ");
+    if ($query->rowCount() > 0) {
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+      }
+      return $data;
+    }
+  }
+  //Update One Or More Than One Row In Database.
+  public function delete()
+  {
+    $string = "SELECT * FROM " . self::$instance['table'];
+    $string .= " WHERE id = " . self::$instance['id'];
+    $querySelect = DB::connect()->query($string . " LIMIT 1 ");
+
+
+    $query = "DELETE FROM " . self::$instance['table'];
+    self::$instance['sql'][0] = $query;
+    $sql = "";
+    foreach (self::$instance['sql'] as $key => $value)
+      $sql .= $value;
+    $stmt = Database::connect()->prepare($sql);
+    $stmt->execute();
+
+    if ($querySelect->rowCount() == 1) {
+      $row = $querySelect->fetch(PDO::FETCH_ASSOC);
+      return $row;
+    }
+  }
 }
-else
-{
-$set="$key = :".$key.", ";
-$st=$st.$set;
-$counter++;
-}
-}
-$sql=" ";
-$sql.="UPDATE ".$this->table." SET ".$st;
-if ($this->id and !$this->value){
-$sql.=" WHERE id = ".$this->id;
-}
-else if ($this->id and $this->value){
-$sql.=" WHERE " . $this->id . " = ".$this->value;
-}
-else{
-$sql.=" WHERE id = ".$this->id;
-}
-$stmt=$this->connect()->prepare($sql);
-foreach ($fields as $key => $value){
-$stmt->bindValue(':'.$key,$value);
-}
-$stmt->execute();
-$string = "SELECT * FROM " . $table;
-if (!$this->value){
-$string .= " WHERE id = " . $this->id;
-}
-else{
-$string .= " WHERE " . $this->id . " = " . $this->value;
-}
-$query = $this->connect()->query($string . " LIMIT 1 ");
-if ($query->rowCount()>0){
-while($row = $query->fetch(PDO::FETCH_ASSOC)){
-$data[] = $row;
-}
-return $data;
-}
-}
-}
-?>

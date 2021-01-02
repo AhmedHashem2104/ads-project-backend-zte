@@ -1,8 +1,5 @@
 <?php
+
+use Route\Route;
 //Authentication
-Route::get('/', 'PostController.index');
-
-Route::post('/posts', 'PostController.posts');
-
-
-Route::delete('/posts', 'PostController.posts');
+Route::resource('posts', 'PostController');

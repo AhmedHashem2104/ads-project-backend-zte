@@ -1,13 +1,19 @@
 <?php
 
+namespace Request;
+
+use DB\DB;
+
+use Response\Response;
+
 class Request extends DB
 {
 
-  private $_errors = array();
+  private static $errors = array();
 
-  public $file;
+  public static $file;
 
-  public function validate($src, $rules = [])
+  public static function validate($src, $rules = [])
   {
 
     if (is_object($src)) {
@@ -30,18 +36,18 @@ class Request extends DB
 
             $state = true;
 
-            $this->addError($item, $item . ' should be minimum ' . $new_data[1] . ' characters');
+            self::addError($item, $item . ' should be minimum ' . $new_data[1] . ' characters');
           } else if ($new_data[0] == 'max' and isset($src[$item]) and !empty($src[$item]) and strlen($src[$item]) > $new_data[1]) {
 
             $state = true;
 
-            $this->addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
+            self::addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
           } else if ($new_data[0] == 'unique' and isset($src[$item]) and !empty($src[$item])) {
 
             $query = DB::rawOneQuery("SELECT * FROM " . $new_data[1] . " WHERE email = '$src[$item]'");
 
             if ($query) {
-              $this->addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
+              self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
             }
           }
         } else {
@@ -50,21 +56,21 @@ class Request extends DB
 
             $state = true;
 
-            $this->addError($item, $item . ' is required');
+            self::addError($item, $item . ' is required');
           } else if ($value == 'int' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_INT)) {
 
-            $this->addError($item, $item . ' should be integer');
+            self::addError($item, $item . ' should be integer');
           } else if ($value == 'float' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_FLOAT)) {
 
-            $this->addError($item, $item . ' should be float');
+            self::addError($item, $item . ' should be float');
           } else if ($value == 'string' and (isset($src[$item]) or !empty($src[$item])) and intval($src[$item]) != 0) {
 
-            $this->addError($item, $item . ' should be string');
+            self::addError($item, $item . ' should be string');
           } else if ($value == 'email' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_EMAIL)) {
 
             $state = true;
 
-            $this->addError($item, $item . ' should be email');
+            self::addError($item, $item . ' should be email');
           }
         }
       }
@@ -76,7 +82,7 @@ class Request extends DB
     }
   }
 
-  public function validateAll($src, $rules = [])
+  public static function validateAll($src, $rules = [])
   {
 
     if (is_object($src)) {
@@ -95,11 +101,11 @@ class Request extends DB
         if (is_array($new_data) and sizeof($new_data) > 1) {
 
           if ($new_data[0] == 'min' and isset($src[$item]) and !empty($src[$item]) and strlen($src[$item]) < $new_data[1]) {
-            $this->addError($item, $item . ' should be minimum ' . $new_data[1] . ' characters');
+            self::addError($item, $item . ' should be minimum ' . $new_data[1] . ' characters');
           }
 
           if ($new_data[0] == 'max' and isset($src[$item]) and !empty($src[$item]) and strlen($src[$item]) > $new_data[1]) {
-            $this->addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
+            self::addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
           }
 
           if ($new_data[0] == 'unique' and isset($src[$item]) and !empty($src[$item])) {
@@ -107,30 +113,30 @@ class Request extends DB
             $query = DB::rawOneQuery("SELECT * FROM " . $new_data[1] . " WHERE email = '$src[$item]'");
 
             if ($query) {
-              $this->addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
+              self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
             }
           }
         } else {
 
           if ($value == 'required' and (!isset($src[$item]) or empty($src[$item]))) {
 
-            $this->addError($item, $item . ' is required');
+            self::addError($item, $item . ' is required');
           }
           if ($value == 'int' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_INT)) {
 
-            $this->addError($item, $item . ' should be integer');
+            self::addError($item, $item . ' should be integer');
           }
           if ($value == 'float' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_FLOAT)) {
 
-            $this->addError($item, $item . ' should be float');
+            self::addError($item, $item . ' should be float');
           }
           if ($value == 'string' and (isset($src[$item]) or !empty($src[$item])) and intval($src[$item]) != 0) {
 
-            $this->addError($item, $item . ' should be string');
+            self::addError($item, $item . ' should be string');
           }
           if ($value == 'email' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_EMAIL)) {
 
-            $this->addError($item, $item . ' should be email');
+            self::addError($item, $item . ' should be email');
           }
         }
       }
@@ -141,18 +147,18 @@ class Request extends DB
 
   private function addError($item, $error)
   {
-    array_push($this->_errors, array('field' => $item, 'message' => $error));
+    array_push(self::$errors, array('field' => $item, 'message' => $error));
   }
 
 
-  public function errors()
+  public static function errors()
   {
-    if (empty($this->_errors)) return false;
+    if (empty(self::$errors)) return false;
     http_response_code(400);
-    return Response::json($this->_errors);
+    return Response::json(self::$errors);
   }
 
-  public function only(array $arr)
+  public static function only(array $arr)
   {
 
     $all = (object)[];
@@ -275,7 +281,7 @@ class Request extends DB
     return $all;
   }
 
-  public function file($name)
+  public static function file($name)
   {
     if ($_SERVER['REQUEST_METHOD'] == "POST" or $_SERVER['REQUEST_METHOD'] == "GET") {
       if (isset($_FILES) and !empty($_FILES)) {
@@ -378,7 +384,7 @@ class Request extends DB
     }
   }
 
-  public function all()
+  public static function all()
   {
 
     $all = (object)[];
@@ -475,7 +481,7 @@ class Request extends DB
     return $all;
   }
 
-  public function input($data)
+  public static function input($data)
   {
 
     if (isset($_POST[$data])) {
@@ -539,7 +545,7 @@ class Request extends DB
   }
 
 
-  public function post($data = false)
+  public static function post($data = false)
   {
 
     $all = (object)[];
@@ -560,28 +566,26 @@ class Request extends DB
     return $all;
   }
 
-  public function get($data = false)
+  public static function get($data = false)
   {
-
     $all = (object)[];
 
     if (isset($_GET) and !empty($_GET)) {
 
       if ($data) {
-
         return $_GET[$data];
-      }
+      } else {
+        foreach ($_GET as $key => $value) {
 
-      foreach ($_GET as $key => $value) {
-
-        $all->{$key} = $value;
+          $all->{$key} = $value;
+        }
       }
     }
 
     return $all;
   }
 
-  public function htmlMail($from, $to, $subject, $message, $cc = false)
+  public static function htmlMail($from, $to, $subject, $message, $cc = false)
   {
 
     $mail_to = $to;
@@ -610,7 +614,7 @@ class Request extends DB
     return false;
   }
 
-  public function Mail($from, $to, $subject, $message, $cc = false)
+  public static function Mail($from, $to, $subject, $message, $cc = false)
   {
 
     $mail_to = $to;

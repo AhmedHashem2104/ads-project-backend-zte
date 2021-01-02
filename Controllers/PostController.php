@@ -1,71 +1,42 @@
 <?php
 
-class PostController extends Post
+
+use Post\Post;
+
+class PostController
 {
 
-	public function index($response, $request)
+	public function index($response)
 	{
-		// $posts = Post::all();
-		// 	return $response->json($posts);
-		return $response->json(['name' => 'Ahmed Hashem']);
+		$posts = Post::query()->fetch();
+		return $response->json($posts);
 	}
-	public function posts($response, $request)
+
+	public function show($response, $request)
 	{
-		$posts = $request->all();
-		$img = $request->file('img');
-		compressImage($img, 'Ahmed3.png', 'img/ahmed');
-		movePublicPath($img, 'Ahmed4.png', 'img/ali');
-		return $response->json([$posts, $img]);
-		// return $response->view('posts');
-	}
-	public function posts_details($response, $request)
-	{
-		// $posts = Post::all();
-		// 	return $response->json($posts);
-		return $response->view('posts_details');
+		$id = $request->get('id');
+		$post = Post::find($id);
+		return $response->status(200)->json($post);
 	}
 
 	public function store($response, $request)
 	{
 		$data = $request->all();
-		$query = Post::create($data);
-		if ($query) {
-			return $response->json($query);
-		}
-		return $response->json(array('status' => 400, 'message' => 'Failed.'));
-	}
-
-	public function lastField($response)
-	{
-		$aa = Post::query()->where('title', '=', 'Ahmed')->last();
-		return $response->json($aa);
-	}
-
-	public function show($response, $request)
-	{
-		$post = Post::find($request->input('id'));
-		if (!$post) {
-			return $response->json(array('status' => 400, 'message' => 'No Data Found.'));
-		}
-		return $response->json($post);
+		$post = Post::create($data);
+		return $response->status(201)->json($post);
 	}
 
 	public function update($response, $request)
 	{
 		$data = $request->all();
-		$post->title = $data->title;
-		$post->body = $data->body;
-		$post = $post->save($data->id);
-		return $response->json($post);
+		$post = Post::query()->where('id', '=', $data->id)->update($data);
+		return $response->status(200)->json($post);
 	}
 
-	public function bulk($response, $request)
+	public function destroy($response, $request)
 	{
-		$id = $request->input('id');
-		$post = Post::delete($id);
-		if (!$post) {
-			return $response->json(array('status' => 400, 'message' => 'No Data Found.'));
-		}
-		return $response->json($post);
+		$id = $request->get('id');
+		$post = Post::query()->where('id', '=', $id)->delete();
+		return $response->status(200)->json($post);
 	}
 }
