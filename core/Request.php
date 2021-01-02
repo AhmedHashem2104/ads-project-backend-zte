@@ -4,7 +4,6 @@ namespace Request;
 
 use DB\DB;
 use Response\Response;
-use Exception;
 
 class Request extends DB
 {

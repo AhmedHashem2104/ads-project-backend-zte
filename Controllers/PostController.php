@@ -1,6 +1,5 @@
 <?php
 
-
 use Post\Post;
 
 class PostController
@@ -8,8 +7,8 @@ class PostController
 
 	public function index($response)
 	{
-		$posts = Post::query()->where('title', 'LIKE', '%a%')->orderBy('id', 'DESC')->fetch();
-		return $response->json($posts);
+		$posts = Post::all();
+		return $response->status(200)->json($posts);
 	}
 
 	public function show($response, $request)
