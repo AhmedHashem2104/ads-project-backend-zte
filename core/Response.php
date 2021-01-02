@@ -4,10 +4,8 @@ namespace Response;
 
 class Response
 {
-
     public static function render($parm, $data)
     {
-
         $GLOBALS['data'] = array($parm => $data);
     }
 
@@ -27,12 +25,12 @@ class Response
             ]);
 
             $twig->setLexer($lexer);
+
             if (!isset($data)) {
                 if (!empty($GLOBALS['data'])) {
                     echo 'asas';
                     echo $twig->render($parm . '.zte.twig', $GLOBALS['data'][$parm]);
                 } else {
-
                     echo $twig->render($parm . '.zte.twig');
                 }
             } else {
@@ -50,7 +48,6 @@ class Response
 
     public static function json($string)
     {
-
         header("Access-Control-Allow-Origin: *");
 
         header("Content-Type: application/json; charset=UTF-8");
@@ -62,24 +59,20 @@ class Response
         header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
         if (is_array($string) or is_object($string)) {
-
             return json_encode($string, JSON_UNESCAPED_UNICODE);
         }
+        return $string;
     }
 
     public static function view_error()
     {
-
         header('HTTP/1.1 404 Not Found');
-
         require_once dirname(dirname(__FILE__)) . '/core/errors.php';
     }
 
     public static function access_denied()
     {
-
         header('HTTP/1.1 503 Not Found');
-
         require_once dirname(dirname(__FILE__)) . '/core/access_denied.php';
     }
 }

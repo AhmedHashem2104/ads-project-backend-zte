@@ -65,10 +65,8 @@ class DB extends Database
   // Query Builder.
   public static function query()
   {
-
     self::$instance['table'] = get_called_class()::table();
-    $query = "SELECT * FROM " . self::$instance['table'];
-    self::$instance['sql'][] = $query;
+    self::$instance['sql'][] = "SELECT * FROM " . self::$instance['table'];
     $self = new self;
     return $self;
   }
@@ -76,15 +74,14 @@ class DB extends Database
   public static function select($table)
   {
     self::$instance['table'] = get_called_class()::table();
-    $query = "SELECT * FROM " . self::$instance['table'];
-    self::$instance['sql'][] = $query;
+    self::$instance['sql'][] = "SELECT * FROM " . self::$instance['table'];
     $self = new self;
     return $self;
   }
   // Where Conditions in SQL.
   public static function where($parameter, $operator, $value)
   {
-    self::$instance['id'] = $value;
+    // self::$instance['id'] = $value;
     if (self::$instance['counter'] == 0) {
       self::$instance['sql'][] = " WHERE " . $parameter . " " . $operator . " '" . $value . "'";
       self::$instance['counter']++;
@@ -316,7 +313,7 @@ class DB extends Database
   public static function get()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $query = DB::connect()->query($sql);
     if (!$query) {
@@ -335,7 +332,7 @@ class DB extends Database
   public static function fetch()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $query = DB::connect()->query($sql);
     if (!$query) {
@@ -354,7 +351,7 @@ class DB extends Database
   public static function fetchAll()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as  $value)
       $sql .= $value;
     $query = DB::connect()->query($sql);
     if (!$query) {
@@ -373,7 +370,7 @@ class DB extends Database
   public static function fetchOne()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $query = DB::connect()->query($sql . " LIMIT 1");
     if (!$query) {
@@ -383,14 +380,14 @@ class DB extends Database
       $row = $query->fetch(PDO::FETCH_ASSOC);
       return $row;
     } else {
-      return array();
+      return false;
     }
   }
   // Fetch First Row Data From Database.
   public static function first()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $query = DB::connect()->query($sql . " ORDER BY id LIMIT 1");
     if (!$query) {
@@ -400,14 +397,14 @@ class DB extends Database
       $row = $query->fetch(PDO::FETCH_ASSOC);
       return $row;
     } else {
-      return array();
+      return false;
     }
   }
   // Fetch Last Row Data From Database.
   public static function last()
   {
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $query = DB::connect()->query($sql . " ORDER BY id DESC LIMIT 1");
     if (!$query) {
@@ -417,7 +414,7 @@ class DB extends Database
       $row = $query->fetch(PDO::FETCH_ASSOC);
       return $row;
     } else {
-      return array();
+      return false;
     }
   }
   //Create New Row In Database.
@@ -473,27 +470,25 @@ class DB extends Database
         $counter++;
       }
     }
-    $query = "UPDATE " . self::$instance['table'] . " SET " . $st;
-    self::$instance['sql'][0] = $query;
+    self::$instance['sql'][0] = "UPDATE " . self::$instance['table'] . " SET " . $st;
     $sql = "";
     foreach (self::$instance['sql'] as $key => $value)
       $sql .= $value;
-    $stmt = Database::connect()->prepare($query);
+    $stmt = Database::connect()->prepare($sql);
     foreach ($fields as $key => $value) {
       $stmt->bindValue(':' . $key, $value);
     }
     $stmt->execute();
-    $string = "SELECT * FROM " . self::$instance['table'];
-    if (!self::$instance['value']) {
-      $string .= " WHERE id = " . self::$instance['id'];
-    } else {
-      $string .= " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
-    }
-    $query = DB::connect()->query($string . " LIMIT 1 ");
+    self::$instance['sql'][0] = "SELECT * FROM " . self::$instance['table'];
+    $sql = "";
+    foreach (self::$instance['sql'] as $value)
+      $sql .= $value;
+    $query = DB::connect()->query($sql . " LIMIT 1 ");
     if ($query->rowCount() == 1) {
       $row = $query->fetch(PDO::FETCH_ASSOC);
       return $row;
     }
+    return false;
   }
   //Update One Or More Than One Row In Database.
   public static function modify($table, $fields, $id = false, $value = false)
@@ -541,19 +536,19 @@ class DB extends Database
       }
       return $data;
     }
+    return false;
   }
   //Update One Or More Than One Row In Database.
   public function delete()
   {
-    $string = "SELECT * FROM " . self::$instance['table'];
-    $string .= " WHERE id = " . self::$instance['id'];
-    $querySelect = DB::connect()->query($string . " LIMIT 1 ");
-
-
-    $query = "DELETE FROM " . self::$instance['table'];
-    self::$instance['sql'][0] = $query;
     $sql = "";
-    foreach (self::$instance['sql'] as $key => $value)
+    foreach (self::$instance['sql'] as $value)
+      $sql .= $value;
+    $querySelect = DB::connect()->query($sql . " LIMIT 1 ");
+
+    self::$instance['sql'][0] = "DELETE FROM " . self::$instance['table'];
+    $sql = "";
+    foreach (self::$instance['sql'] as $value)
       $sql .= $value;
     $stmt = Database::connect()->prepare($sql);
     $stmt->execute();
@@ -562,5 +557,6 @@ class DB extends Database
       $row = $querySelect->fetch(PDO::FETCH_ASSOC);
       return $row;
     }
+    return false;
   }
 }

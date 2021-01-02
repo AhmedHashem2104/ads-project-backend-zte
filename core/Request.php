@@ -3,8 +3,8 @@
 namespace Request;
 
 use DB\DB;
-
 use Response\Response;
+use Exception;
 
 class Request extends DB
 {
@@ -281,17 +281,37 @@ class Request extends DB
     return $all;
   }
 
-  public static function file($name)
+  public static function file($name, $rules = array(false))
   {
+    $main_file_name = $name;
+    $type = false;
+    $collectionTypes = "[";
     if ($_SERVER['REQUEST_METHOD'] == "POST" or $_SERVER['REQUEST_METHOD'] == "GET") {
       if (isset($_FILES) and !empty($_FILES)) {
         if (isset($_FILES[$name])) {
+          if (isset($rules['size']) && $rules['size']  < $_FILES[$name]['size']) {
+            die(Response::status(400)->json(['message' => $name . " size is bigger than " . $rules['size'] . " ."]));
+          } else if (isset($rules['type'])) {
+            $imgType = explode("/", $_FILES[$name]['type']);
+            foreach ((array)$rules['type'] as $key => $value) {
+              if ($value === $imgType[1]) {
+                $type = true;
+                break;
+              }
+              if ($key !== sizeof($rules['type']) - 1)
+                $collectionTypes .= " " . $value . " ,";
+              else
+                $collectionTypes .= " " . $value . " ]";
+            }
+            if (!$type) {
+              die(Response::status(400)->json(['message' => $name . " type ( " . $imgType[1] . " ) is not from these extensions " . $collectionTypes . " ."]));
+            }
+          }
           return (object) $_FILES[$name];
         }
+        die(Response::status(400)->json(['message' => $main_file_name . " does not exists."]));
       }
     } else {
-      global $_PUT;
-
       /* PUT data comes in on the stdin stream */
       $putdata = fopen("php://input", "r");
 
@@ -311,15 +331,8 @@ class Request extends DB
       // Fetch content and determine boundary
       $boundary = substr($raw_data, 0, strpos($raw_data, "\r\n"));
 
-      if (empty($boundary)) {
-        parse_str($raw_data, $data);
-        $GLOBALS['_PUT'] = $data;
-        return;
-      }
-
       // Fetch each part
       $parts = array_slice(explode($boundary, $raw_data), 1);
-      $data = array();
 
       foreach ($parts as $part) {
         // If this is the last part, break
@@ -346,7 +359,7 @@ class Request extends DB
             $headers['content-disposition'],
             $matches
           );
-          list(, $type, $name) = $matches;
+          list(,, $name) = $matches;
 
           //Parse File
           if (isset($matches[4])) {
@@ -378,7 +391,9 @@ class Request extends DB
           // }
         }
       }
-      $GLOBALS['_PUT'] = $data;
+
+      if (!isset($_FILES[$name]))
+        die(Response::status(400)->json(['message' => $main_file_name . " does not exists."]));
 
       return (object)$_FILES[$name];
     }
@@ -409,8 +424,6 @@ class Request extends DB
     // Read the input stream
 
     $input = file_get_contents('php://input');
-
-
 
     @preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
 
@@ -595,7 +608,6 @@ class Request extends DB
     $headers = "From: " . strip_tags($from) . "\r\n";
 
     if ($cc) {
-
       $headers .= "CC: " . $cc . "\r\n";
     }
 
@@ -605,12 +617,9 @@ class Request extends DB
 
     $mail_message = $message;
 
-
     if (mail($mail_to, $mail_subject, $mail_message, $headers)) {
-
       return true;
     }
-
     return false;
   }
 
@@ -633,10 +642,8 @@ class Request extends DB
     }
 
     if (mail($mail_to, $mail_subject, $mail_message, $headers)) {
-
       return true;
     }
-
     return false;
   }
 }

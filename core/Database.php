@@ -3,7 +3,6 @@
 namespace Database;
 
 use PDO;
-
 use Exception;
 
 class Database

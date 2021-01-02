@@ -8,7 +8,7 @@ class PostController
 
 	public function index($response)
 	{
-		$posts = Post::query()->fetch();
+		$posts = Post::query()->where('title', 'LIKE', '%a%')->orderBy('id', 'DESC')->fetch();
 		return $response->json($posts);
 	}
 
@@ -21,6 +21,10 @@ class PostController
 
 	public function store($response, $request)
 	{
+		$img = $request->file('img', [
+			'size' => 25000,
+			'type' => ['jpg', 'png', 'JPG', 'PNG']
+		]);
 		$data = $request->all();
 		$post = Post::create($data);
 		return $response->status(201)->json($post);
@@ -28,6 +32,10 @@ class PostController
 
 	public function update($response, $request)
 	{
+		$img = $request->file('img', [
+			'size' => 25000,
+			'type' => ['jpg', 'png', 'JPG', 'PNG']
+		]);
 		$data = $request->all();
 		$post = Post::query()->where('id', '=', $data->id)->update($data);
 		return $response->status(200)->json($post);

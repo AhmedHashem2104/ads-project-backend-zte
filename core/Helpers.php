@@ -16,6 +16,8 @@ function compress($source, $destination, $quality)
   }
 
   imagejpeg($image, $destination, $quality);
+
+  return true;
 }
 
 function compressImage($file, $filename, $path)
@@ -55,7 +57,6 @@ function movePublicPath($file, $filename, $path)
     move_uploaded_file($file->tmp_name, dirname(dirname(__FILE__)) . '/public/' . $path . '/' . $filename);
   else
     copy($file->tmp_name, dirname(dirname(__FILE__)) . '/public/' . $path . '/' . $filename);
-
 
   return false;
 }

@@ -14,16 +14,9 @@ use Response\Response;
 class Auth extends Controller
 {
 
-    public function class()
-    {
-
-        return get_class($this);
-    }
-
     public function table()
     {
-
-        return 'users';
+        return "posts";
     }
 
     public function hash($data)

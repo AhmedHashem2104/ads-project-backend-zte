@@ -3,10 +3,6 @@
 use Route\Route;
 
 
-
-
-
 //Authentication
 Route::resource('posts', 'PostController');
-
-Route::get('/', 'AhmedController.index');
+Route::get('/home', 'AhmedController.index');
