@@ -1,4 +1,6 @@
 <?php
+
+use Response\Response;
 // Compress image
 function compress($source, $destination, $quality)
 {

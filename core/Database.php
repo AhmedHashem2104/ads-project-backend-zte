@@ -8,12 +8,6 @@ use Exception;
 
 class Database
 {
-    private $servername;
-    private $dbname;
-    private $username;
-    private $password;
-    private $conn;
-    private $options;
     public static function connect()
     {
         $servername = $_ENV['HOST'];
