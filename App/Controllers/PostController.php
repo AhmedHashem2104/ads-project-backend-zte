@@ -6,7 +6,7 @@ class PostController
 
 	public function index($response)
 	{
-		$posts = Post::query()->with('techs');
+		$posts = Post::query()->fetch();
 
 		return $response->status(200)->json($posts);
 	}
