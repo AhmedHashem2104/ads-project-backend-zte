@@ -1,16 +1,5 @@
 <?php
 
-namespace Auth;
-
-use Controller\Controller;
-
-use DB\DB;
-
-use Response\Response;
-
-/**
- * The home page model
- */
 class Auth extends Controller
 {
 
@@ -19,7 +8,7 @@ class Auth extends Controller
         return "posts";
     }
 
-    public function hash($data)
+    public static function hash($data)
     {
 
         $password = password_hash($data, PASSWORD_DEFAULT);
@@ -27,7 +16,7 @@ class Auth extends Controller
         return $password;
     }
 
-    public function invoke($email, $password)
+    public static function invoke($email, $password)
     {
 
         $data = DB::rawOneQuery("SELECT * FROM users WHERE email = '$email' LIMIT 1");
@@ -60,7 +49,7 @@ class Auth extends Controller
         die(Response::json(array('message' => 'Wrong Email or Password')));
     }
 
-    public function authenticate()
+    public static function authenticate()
     {
 
         $headers = null;
@@ -97,7 +86,7 @@ class Auth extends Controller
         die(json_encode(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
     }
 
-    public function revoke()
+    public static function revoke()
     {
 
         $headers = null;

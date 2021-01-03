@@ -1,11 +1,5 @@
 <?php
 
-namespace Route;
-
-use Auth\Auth;
-use Request\Request;
-use Response\Response;
-
 class Route
 {
     public static function get($path, $controller)
@@ -56,7 +50,7 @@ class Route
                 if (strpos($controller, ".")) {
                     $orb = explode('.', $controller);
                     $func = $orb[1];
-                    require_once dirname(dirname(__FILE__)) . '/Controllers/' . $orb[0] . '.php';
+                    require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
                     $controllerObj  = new $controllerName();
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
@@ -105,7 +99,7 @@ class Route
                 if (strpos($controller, ".")) {
                     $orb = explode('.', $controller);
                     $func = $orb[1];
-                    require_once dirname(dirname(__FILE__)) . '/Controllers/' . $orb[0] . '.php';
+                    require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
                     $controllerObj  = new $controllerName();
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
@@ -155,7 +149,7 @@ class Route
                 if (strpos($controller, ".")) {
                     $orb = explode('.', $controller);
                     $func = $orb[1];
-                    require_once dirname(dirname(__FILE__)) . '/Controllers/' . $orb[0] . '.php';
+                    require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
                     $controllerObj  = new $controllerName();
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
@@ -204,7 +198,7 @@ class Route
                 if (strpos($controller, ".")) {
                     $orb = explode('.', $controller);
                     $func = $orb[1];
-                    require_once dirname(dirname(__FILE__)) . '/Controllers/' . $orb[0] . '.php';
+                    require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
                     $controllerObj  = new $controllerName();
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
@@ -253,7 +247,7 @@ class Route
                 if (strpos($controller, ".")) {
                     $orb = explode('.', $controller);
                     $func = $orb[1];
-                    require_once dirname(dirname(__FILE__)) . '/Controllers/' . $orb[0] . '.php';
+                    require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
                     $controllerObj  = new $controllerName();
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));

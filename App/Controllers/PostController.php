@@ -1,13 +1,13 @@
 <?php
 
-use Post\Post;
 
 class PostController
 {
 
 	public function index($response)
 	{
-		$posts = Post::all();
+		$posts = Post::query()->with('techs');
+
 		return $response->status(200)->json($posts);
 	}
 

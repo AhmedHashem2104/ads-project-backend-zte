@@ -1,16 +1,8 @@
 <?php
 
-namespace DB;
-
-use Database\Database;
-
-use PDO;
-
-use PDOException;
-
 class DB extends Database
 {
-  private static $instance = array('sql' => array(), 'counter' => 0, 'table' => '', 'value' => '', 'id' => '');
+  private static $instance = array('sql' => array(), 'counter' => 0, 'table' => '', 'value' => '', 'id' => '', 'queryCounter' => 0);
   // Select One Row.
   public static function rawOneQuery($sql)
   {
@@ -65,6 +57,8 @@ class DB extends Database
   // Query Builder.
   public static function query()
   {
+    self::$instance['sql'][self::$instance['queryCounter']] = array();
+    self::$instance['model'] = get_called_class();
     self::$instance['table'] = get_called_class()::table();
     self::$instance['sql'][] = "SELECT * FROM " . self::$instance['table'];
     $self = new self;
@@ -334,6 +328,7 @@ class DB extends Database
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
+    echo $sql . "/";
     $query = DB::connect()->query($sql);
     if (!$query) {
       return false;
@@ -342,6 +337,7 @@ class DB extends Database
       while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $data[] = $row;
       }
+      print_r($data);
       return $data;
     } else {
       return array();
@@ -559,4 +555,25 @@ class DB extends Database
     }
     return false;
   }
+
+  // public static function with($tableName)
+  // {
+  //   self::$instance['model']::$tableName();
+  //   $self = new self;
+  //   return $self;
+  // }
+
+  // protected static function hasOne($model, $primaryKey_foreignKey = array(false))
+  // {
+  //   $query = DB::connect()->query("SELECT * FROM posts LEFT JOIN " . $model::table() . " ON posts.id = " . $model::table() . ".post_id");
+  //   if ($query->rowCount() > 0) {
+  //     while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+  //       $data[] = $row;
+  //     }
+  //   }
+  //   print_r(json_encode($data));
+  //   die();
+  //   echo get_called_class();
+  //   $techs = Tech::query()->fetch();
+  // }
 }

@@ -1,11 +1,7 @@
 <?php
 
-namespace Request;
 
-use DB\DB;
-use Response\Response;
-
-class Request extends DB
+class Request
 {
 
   private static $errors = array();

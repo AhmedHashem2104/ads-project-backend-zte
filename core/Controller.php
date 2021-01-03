@@ -1,8 +1,6 @@
 <?php
 
-namespace Controller;
 
-use DB\DB;
 
 class Controller extends DB
 {

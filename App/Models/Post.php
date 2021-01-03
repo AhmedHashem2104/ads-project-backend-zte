@@ -1,8 +1,6 @@
 <?php
 
-namespace Post;
 
-use Controller\Controller;
 
 class Post extends Controller
 {
@@ -10,4 +8,9 @@ class Post extends Controller
 	{
 		return "posts";
 	}
+
+	// public function techs()
+	// {
+	// 	return DB::hasOne(Tech::class);
+	// }
 }
