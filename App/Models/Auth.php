@@ -5,7 +5,7 @@ class Auth extends Controller
 
     public function table()
     {
-        return "posts";
+        return "users";
     }
 
     public static function hash($data)
@@ -115,10 +115,10 @@ class Auth extends Controller
                     http_response_code(400);
                     die(json_encode(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
                 }
-                $email = $data['email'];
-                $id = $data['id'];
+                $email = $data[0]['email'];
+                $id = $data[0]['id'];
 
-                $query = DB::updateQuery("UPDATE users SET token = 'NULL' WHERE email = '$email' and id = '$id' and token = '$token'");
+                $query = DB::updateQuery("UPDATE users SET token = NULL WHERE email = '$email' and id = '$id' and token = '$token'");
 
                 if ($query) {
                     return true;

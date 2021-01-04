@@ -2,7 +2,7 @@
 
 class DB extends Database
 {
-  private static $instance = array('sql' => array(), 'counter' => 0, 'table' => '', 'value' => '', 'id' => '', 'queryCounter' => 0);
+  private static $instance = array('sql' => array(), 'counter' => 0, 'table' => '', 'value' => '', 'id' => '');
   // Select One Row.
   public static function rawOneQuery($sql)
   {
@@ -57,7 +57,7 @@ class DB extends Database
   // Query Builder.
   public static function query()
   {
-    self::$instance['sql'][self::$instance['queryCounter']] = array();
+    self::$instance['sql'] = array();
     self::$instance['model'] = get_called_class();
     self::$instance['table'] = get_called_class()::table();
     self::$instance['sql'][] = "SELECT * FROM " . self::$instance['table'];
@@ -82,6 +82,7 @@ class DB extends Database
     } else {
       self::$instance['sql'][] = " AND " . $parameter . " " . $operator . " '" . $value . "'";
     }
+
     $self = new self;
     return $self;
   }
@@ -328,7 +329,6 @@ class DB extends Database
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
-    echo $sql . "/";
     $query = DB::connect()->query($sql);
     if (!$query) {
       return false;
@@ -337,7 +337,6 @@ class DB extends Database
       while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $data[] = $row;
       }
-      print_r($data);
       return $data;
     } else {
       return array();
@@ -573,7 +572,6 @@ class DB extends Database
   //   }
   //   print_r(json_encode($data));
   //   die();
-  //   echo get_called_class();
   //   $techs = Tech::query()->fetch();
   // }
 }

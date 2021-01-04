@@ -1,9 +1,5 @@
 <?php
 
-use App\Models\Auth\Auth;
-
-use App\Core\Helpers;
-
 class AuthController
 {
 
@@ -54,25 +50,5 @@ class AuthController
 	{
 		Auth::revoke();
 		return $response->json(array('message' => 'Token Revoked'));
-	}
-
-	public function index($response, $request, $auth)
-	{
-		$auth->authenticate();
-		$users = Auth::all();
-		return $response->json($users);
-	}
-
-	public function delete($response, $request, $auth)
-	{
-		$auth->authenticate();
-		$data = Auth::find($request->input('id'));
-		if ($data) {
-			$query = Auth::deleteORM($request->input('id'));
-			return $response->json(array('message' => 'Done', 'data' => $data));
-		} else {
-			http_response_code(400);
-			return $response->json(array('message' => 'Fail'));
-		}
 	}
 }

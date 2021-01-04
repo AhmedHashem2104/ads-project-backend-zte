@@ -50,10 +50,10 @@ class Controller extends DB
         $promos = json_encode($this);
         $data = json_decode($promos, true);
         if ($id and !empty($id)) {
-            $data = DB::query()->modify(get_called_class()::table(), $data, 'id', $id);
+            $data = DB::modify(get_called_class()::table(), $data, 'id', $id);
             $data = get_called_class()::query()->where('id', '=', $id)->fetch();
         } else {
-            $data = DB::query()->creator(get_called_class()::table(), $data);
+            $data = DB::creator(get_called_class()::table(), $data);
         }
         return $data;
     }
