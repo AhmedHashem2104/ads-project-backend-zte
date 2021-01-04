@@ -30,3 +30,6 @@ Route::get('/api/v1/admin/getCourse/:id', 'Admin/CoursesController.getCourse');
 Route::put('/api/v1/admin/updateCourse/:id', 'Admin/CoursesController.updateCourse');
 
 Route::put('/api/v1/admin/deleteCourse/:id', 'Admin/CoursesController.deleteCourse');
+
+
+// Instructor
