@@ -80,7 +80,7 @@ class DB extends Database
       self::$instance['sql'][] = " WHERE " . $parameter . " = " . $value;
       self::$instance['counter']++;
     } else {
-      self::$instance['sql'][] = " AND " . $parameter . $parameter . " = " . $value;
+      self::$instance['sql'][] = " AND " . $parameter . " = " . $value;
     }
 
     $self = new self;
