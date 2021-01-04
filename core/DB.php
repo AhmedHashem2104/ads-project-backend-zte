@@ -67,48 +67,48 @@ class DB extends Database
   // Select All Data From Table.
   public static function select($table)
   {
-    self::$instance['table'] = get_called_class()::table();
+    self::$instance['table'] = $table;
     self::$instance['sql'][] = "SELECT * FROM " . self::$instance['table'];
     $self = new self;
     return $self;
   }
   // Where Conditions in SQL.
-  public static function where($parameter, $operator, $value)
+  public static function where($parameter, $value)
   {
     // self::$instance['id'] = $value;
     if (self::$instance['counter'] == 0) {
-      self::$instance['sql'][] = " WHERE " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['sql'][] = " WHERE " . $parameter . " = " . $value;
       self::$instance['counter']++;
     } else {
-      self::$instance['sql'][] = " AND " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['sql'][] = " AND " . $parameter . $parameter . " = " . $value;
     }
 
     $self = new self;
     return $self;
   }
   // orWhere Conditions in SQL.
-  public static function orWhere($parameter, $operator, $value)
+  public static function orWhere($parameter, $value)
   {
-    self::$instance['sql'][] = " OR " . $parameter . " " . $operator . " '" . $value . "'";
+    self::$instance['sql'][] = " OR " . $parameter . $parameter . " = " . $value;
     $self = new self;
     return $self;
   }
   // whereNot Conditions in SQL.
-  public static function whereNot($parameter, $operator, $value)
+  public static function whereNot($parameter, $value)
   {
     if (self::$instance['counter'] == 0) {
-      self::$instance['sql'][] = " WHERE NOT " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['sql'][] = " WHERE NOT " . $parameter . " = " . $value;
       self::$instance['counter']++;
     } else {
-      self::$instance['sql'][] = " AND NOT " . $parameter . " " . $operator . " '" . $value . "'";
+      self::$instance['sql'][] = " AND NOT " . $parameter . " = " . $value;
     }
     $self = new self;
     return $self;
   }
   // orWhereNot Conditions in SQL.
-  public static function orWhereNot($parameter, $operator, $value)
+  public static function orWhereNot($parameter, $value)
   {
-    self::$instance['sql'][] = " OR NOT " . $parameter . " " . $operator . " '" . $value . "'";
+    self::$instance['sql'][] = " OR NOT " . $parameter . $parameter . " = " . $value;
     $self = new self;
     return $self;
   }

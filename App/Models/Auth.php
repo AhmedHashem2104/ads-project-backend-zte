@@ -73,13 +73,12 @@ class Auth extends Controller
                 $token = $matches[1];
 
                 $data = DB::rawOneQuery("SELECT * FROM users WHERE token = '$token'");
-
                 if (!is_array($data)) {
                     http_response_code(401);
                     die(Response::json(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
                 }
 
-                return Response::json($data);
+                return (object)$data;
             }
         }
         http_response_code(401);

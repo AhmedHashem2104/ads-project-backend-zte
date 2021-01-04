@@ -42,7 +42,7 @@ class AuthController
 		$email = $request->input('email');
 		$password = $request->input('password');
 		$token = $auth->invoke($email, $password);
-		$user = $auth->query()->where('email', '=', $email)->fetch();
+		$user = $auth->query()->where('email', $email)->first();
 		return $response->json(array('user' => $user, 'token' => $token));
 	}
 

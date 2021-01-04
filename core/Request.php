@@ -39,7 +39,7 @@ class Request
             self::addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
           } else if ($new_data[0] == 'unique' and isset($src[$item]) and !empty($src[$item])) {
 
-            $query = DB::rawOneQuery("SELECT * FROM " . $new_data[1] . " WHERE email = '$src[$item]'");
+            $query = DB::rawQuery("SELECT * FROM " . $new_data[1] . " WHERE " . $item . " = '$src[$item]'");
 
             if ($query) {
               self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
@@ -52,6 +52,8 @@ class Request
             $state = true;
 
             self::addError($item, $item . ' is required');
+          } else if ($value == 'slug') {
+            $src[$item] = str_replace(' ', '-', $src[$item]);
           } else if ($value == 'int' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_INT)) {
 
             self::addError($item, $item . ' should be integer');
@@ -90,7 +92,6 @@ class Request
 
       $data = explode('|', $item_value);
       foreach ($data as $value) {
-
         $new_data = explode(':', $value);
 
         if (is_array($new_data) and sizeof($new_data) > 1) {
@@ -102,20 +103,23 @@ class Request
           if ($new_data[0] == 'max' and isset($src[$item]) and !empty($src[$item]) and strlen($src[$item]) > $new_data[1]) {
             self::addError($item, $item . ' should be maximum ' . $new_data[1] . ' characters');
           }
-
           if ($new_data[0] == 'unique' and isset($src[$item]) and !empty($src[$item])) {
 
-            $query = DB::rawOneQuery("SELECT * FROM " . $new_data[1] . " WHERE email = '$src[$item]'");
+            $query = DB::rawQuery("SELECT * FROM " . $new_data[1] . " WHERE " . $item . " = '$src[$item]'");
 
             if ($query) {
+
               self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
             }
           }
         } else {
-
           if ($value == 'required' and (!isset($src[$item]) or empty($src[$item]))) {
 
             self::addError($item, $item . ' is required');
+          }
+          if ($value == 'slug') {
+
+            $src[$item] = str_replace(' ', '-', $src[$item]);
           }
           if ($value == 'int' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_INT)) {
 
@@ -137,10 +141,10 @@ class Request
       }
     }
 
-    return true;
+    return (object)$src;
   }
 
-  private static function addError($item, $error)
+  public static function addError($item, $error)
   {
     array_push(self::$errors, array('field' => $item, 'message' => $error));
   }
@@ -593,6 +597,104 @@ class Request
     return $all;
   }
 
+  public static function except($exception)
+  {
+
+    $all = (object)[];
+
+    // Make sure Content-Type is application/json
+
+    $content_type = isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '';
+
+    if (stripos($content_type, 'application/json') === false) {
+
+      @header("Access-Control-Allow-Origin: *");
+
+      @header("Content-Type: application/json; charset=UTF-8");
+
+      @header("Access-Control-Allow-Methods: GET , POST , PUT , PATCH , DELETE");
+
+      @header("Access-Control-Max-Age: 3600");
+
+      @header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+    }
+
+    // Read the input stream
+
+    $input = file_get_contents('php://input');
+
+    @preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
+
+    if ($matches) {
+
+      $boundary = $matches[1];
+
+      $a_blocks = preg_split("/-+$boundary/", $input);
+
+      array_pop($a_blocks);
+    } else {
+
+      parse_str($input, $a_blocks);
+    }
+
+    foreach ($a_blocks as $id => $block) {
+
+      if (empty($block) or strpos($block, "Content-Type: image"))
+
+        continue;
+
+
+      if (strpos($block, 'application/octet-stream') !== FALSE) {
+
+        preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
+      } else {
+
+        preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
+      }
+
+      if ($matches) {
+
+        $all->{$matches[1]} = $matches[2];
+      } else {
+
+        $all->{$id} = $block;
+      }
+    }
+
+    // Decode the JSON object
+
+    $object = json_decode($input, true);
+
+    // Throw an exception if decoding failed
+
+    if (is_array($object)) {
+
+      foreach ($object as $key => $value) {
+        $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+        $all->{$key} = $value;
+      }
+    }
+
+    if (isset($_POST) and !empty($_POST)) {
+
+      foreach ($_POST as $key => $value) {
+        $all->{$key} =  $value;
+      }
+    }
+
+    if (isset($_GET) and !empty($_GET)) {
+
+      foreach ($_GET as $key => $value) {
+        $all->{$key} = $value;
+      }
+    }
+
+    foreach ($exception as $value)
+      unset($all->{$value});
+
+    return $all;
+  }
+
   public static function htmlMail($from, $to, $subject, $message, $cc = false)
   {
 
@@ -640,5 +742,32 @@ class Request
       return true;
     }
     return false;
+  }
+
+  public function uuid()
+  {
+    return sprintf(
+      '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+      // 32 bits for "time_low"
+      mt_rand(0, 0xffff),
+      mt_rand(0, 0xffff),
+
+      // 16 bits for "time_mid"
+      mt_rand(0, 0xffff),
+
+      // 16 bits for "time_hi_and_version",
+      // four most significant bits holds version number 4
+      mt_rand(0, 0x0fff) | 0x4000,
+
+      // 16 bits, 8 bits for "clk_seq_hi_res",
+      // 8 bits for "clk_seq_low",
+      // two most significant bits holds zero and one for variant DCE1.1
+      mt_rand(0, 0x3fff) | 0x8000,
+
+      // 48 bits for "node"
+      mt_rand(0, 0xffff),
+      mt_rand(0, 0xffff),
+      mt_rand(0, 0xffff)
+    );
   }
 }

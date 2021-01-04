@@ -52,7 +52,15 @@ class Route
                     $func = $orb[1];
                     require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
-                    $controllerObj  = new $controllerName();
+
+                    $controllerName = explode('/', $controllerName);
+                    if (sizeof(($controllerName)) >= 1) {
+                        $lastController = sizeof(($controllerName)) - 1;
+                        $controllerObj  = new $controllerName[$lastController]();
+                    } else {
+                        $controllerObj  = new $controllerName();
+                    }
+
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
                 } else {
                     echo $controller;
@@ -101,7 +109,15 @@ class Route
                     $func = $orb[1];
                     require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
-                    $controllerObj  = new $controllerName();
+
+                    $controllerName = explode('/', $controllerName);
+                    if (sizeof(($controllerName)) >= 1) {
+                        $lastController = sizeof(($controllerName)) - 1;
+                        $controllerObj  = new $controllerName[$lastController]();
+                    } else {
+                        $controllerObj  = new $controllerName();
+                    }
+
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
                 } else {
                     echo $controller;
@@ -151,7 +167,15 @@ class Route
                     $func = $orb[1];
                     require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
-                    $controllerObj  = new $controllerName();
+
+                    $controllerName = explode('/', $controllerName);
+                    if (sizeof(($controllerName)) >= 1) {
+                        $lastController = sizeof(($controllerName)) - 1;
+                        $controllerObj  = new $controllerName[$lastController]();
+                    } else {
+                        $controllerObj  = new $controllerName();
+                    }
+
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
                 } else {
                     echo $controller;
@@ -200,7 +224,14 @@ class Route
                     $func = $orb[1];
                     require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
-                    $controllerObj  = new $controllerName();
+
+                    $controllerName = explode('/', $controllerName);
+                    if (sizeof(($controllerName)) >= 1) {
+                        $lastController = sizeof(($controllerName)) - 1;
+                        $controllerObj  = new $controllerName[$lastController]();
+                    } else {
+                        $controllerObj  = new $controllerName();
+                    }
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
                 } else {
                     echo $controller;
@@ -249,7 +280,15 @@ class Route
                     $func = $orb[1];
                     require_once dirname(dirname(__FILE__)) . '/App/Controllers/' . $orb[0] . '.php';
                     $controllerName = ucfirst($orb[0]);
-                    $controllerObj  = new $controllerName();
+
+                    $controllerName = explode('/', $controllerName);
+                    if (sizeof(($controllerName)) >= 1) {
+                        $lastController = sizeof(($controllerName)) - 1;
+                        $controllerObj  = new $controllerName[$lastController]();
+                    } else {
+                        $controllerObj  = new $controllerName();
+                    }
+
                     echo $controllerObj->$func(new Response(false), new Request(false), new Auth(false));
                 } else {
                     echo $controller;

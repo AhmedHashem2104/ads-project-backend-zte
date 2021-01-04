@@ -35,7 +35,7 @@ class Controller extends DB
             $data = DB::query()->modify(get_called_class()::table(), $data, $id, $value);
         }
         if ($data) {
-            $data = get_called_class()::query()->where('id', '=', $id)->fetch();
+            $data = get_called_class()::query()->where('id', $id)->fetch();
             if (!$data) {
                 return false;
             }
@@ -51,7 +51,7 @@ class Controller extends DB
         $data = json_decode($promos, true);
         if ($id and !empty($id)) {
             $data = DB::modify(get_called_class()::table(), $data, 'id', $id);
-            $data = get_called_class()::query()->where('id', '=', $id)->fetch();
+            $data = get_called_class()::query()->where('id', $id)->fetch();
         } else {
             $data = DB::creator(get_called_class()::table(), $data);
         }
@@ -61,7 +61,7 @@ class Controller extends DB
     public static function find($id)
     {
         $_REQUEST['table'] = get_called_class()::table();
-        $data = get_called_class()::query()->where('id', '=', $id)->first();
+        $data = get_called_class()::query()->where('id', $id)->first();
         if ($data) {
             return $data;
         } else {
@@ -71,7 +71,7 @@ class Controller extends DB
     // Select Or Return Error.
     public static function findOrFail($id)
     {
-        $data = get_called_class()::query()->where('id', '=', $id)->first();
+        $data = get_called_class()::query()->where('id',  $id)->first();
         if ($data) {
             return $data;
         } else {
@@ -82,9 +82,9 @@ class Controller extends DB
     public static function findBy($id, $like, $value = false)
     {
         if (!$value) {
-            $data = get_called_class()::query()->where($id, '=', $like)->fetchAll();
+            $data = get_called_class()::query()->where($id,  $like)->fetchAll();
         } else {
-            $data = get_called_class()::query()->where($id, $like, $value)->fetchAll();
+            $data = get_called_class()::query()->whereLike($id, $value)->fetchAll();
         }
         if ($data) {
             return $data;
@@ -96,14 +96,14 @@ class Controller extends DB
     public static function deleteORM($id)
     {
         if (is_array($id)) {
-            $data = get_called_class()::query()->where('id', '=', $id[0]['id'])->fetch();
+            $data = get_called_class()::query()->where('id', $id[0]['id'])->fetch();
             if (!$data) {
                 return false;
             }
             $tmpdata = $data;
             $data = DB::remove(get_called_class()::table(), $id[0]['id']);
         } else {
-            $data = get_called_class()::query()->where('id', '=', $id)->fetch();
+            $data = get_called_class()::query()->where('id', $id)->fetch();
             if (!$data) {
                 return false;
             }
