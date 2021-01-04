@@ -76,14 +76,14 @@ class Auth extends Controller
 
                 if (!is_array($data)) {
                     http_response_code(401);
-                    die(json_encode(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
+                    die(Response::json(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
                 }
 
                 return Response::json($data);
             }
         }
         http_response_code(401);
-        die(json_encode(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
+        die(Response::json(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
     }
 
     public static function revoke()
@@ -113,7 +113,7 @@ class Auth extends Controller
 
                 if (!is_array($data)) {
                     http_response_code(400);
-                    die(json_encode(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
+                    die(Response::json(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));
                 }
                 $email = $data[0]['email'];
                 $id = $data[0]['id'];
@@ -127,6 +127,6 @@ class Auth extends Controller
             }
         }
         http_response_code(401);
-        die(json_encode(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
+        die(Response::json(array('Access' => 'Failed', 'Token' => 'Requied Personal API')));
     }
 }
