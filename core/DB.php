@@ -389,6 +389,7 @@ class DB extends Database
       return false;
     }
     if ($query->rowCount() == 1) {
+
       $row = $query->fetch(PDO::FETCH_ASSOC);
       return $row;
     } else {

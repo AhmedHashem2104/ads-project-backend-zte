@@ -33,11 +33,11 @@ class Auth extends Controller
 
                 $token = password_hash($email, PASSWORD_DEFAULT) . '!' . password_hash($email, PASSWORD_DEFAULT);
 
-                $query = DB::updateQuery("UPDATE users SET token = '$token' WHERE email = '$email' and id = '$id' and password = '$password_check'");
+                $query = DB::updateQuery("UPDATE users SET token = '$token' WHERE email = '$email' and id = '$id' and password = '$password_check' LIMIT 1");
 
                 if ($query) {
 
-                    return array('Type' => 'Bearer', 'Token' => $token);
+                    return array('Type' => 'Bearer', 'Token' => $token, 'user' => $data);
                 } else {
                     http_response_code(401);
                     die(Response::json(array('message' => 'Fail')));
@@ -72,7 +72,7 @@ class Auth extends Controller
             if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
                 $token = $matches[1];
 
-                $data = DB::rawOneQuery("SELECT * FROM users WHERE token = '$token'");
+                $data = DB::rawOneQuery("SELECT * FROM users WHERE token = '$token' LIMIT 1");
                 if (!is_array($data)) {
                     http_response_code(401);
                     die(Response::json(array('Access' => 'Failed', 'Token' => 'Invalid Personal API Token')));

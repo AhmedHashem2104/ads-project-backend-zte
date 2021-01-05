@@ -1,6 +1,6 @@
 <?php
-
-
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 require_once realpath(__DIR__ . '/vendor/autoload.php');
 
 use Dotenv\Dotenv;

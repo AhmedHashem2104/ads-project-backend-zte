@@ -67,7 +67,7 @@ class Request
 
             $state = true;
 
-            self::addError($item, $item . ' should be email');
+            self::addError($item, $item . ' should be valid email');
           }
         }
       }
@@ -135,7 +135,7 @@ class Request
           }
           if ($value == 'email' and (isset($src[$item]) or !empty($src[$item])) and !filter_var($src[$item], FILTER_VALIDATE_EMAIL)) {
 
-            self::addError($item, $item . ' should be email');
+            self::addError($item, $item . ' should be valid email');
           }
         }
       }

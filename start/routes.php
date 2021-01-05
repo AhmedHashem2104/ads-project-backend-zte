@@ -2,8 +2,6 @@
 
 //Authentication
 
-Route::get('/api/v1/admin/getCourse/:id', 'Admin/CoursesController.getCourse');
-
 Route::post('/api/v1/login', 'AuthController.login');
 
 Route::post('/api/v1/register', 'AuthController.register');
@@ -27,6 +25,7 @@ Route::post('/api/v1/admin/createCourse', 'Admin/CoursesController.createCourse'
 
 Route::get('/api/v1/admin/getCourses', 'Admin/CoursesController.getCourses');
 
+Route::get('/api/v1/admin/getCourse/:id', 'Admin/CoursesController.getCourse');
 
 Route::put('/api/v1/admin/updateCourse/:id', 'Admin/CoursesController.updateCourse');
 
