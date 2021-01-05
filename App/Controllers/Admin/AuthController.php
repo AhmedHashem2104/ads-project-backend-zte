@@ -2,33 +2,35 @@
 
 class AuthController
 {
+
+
     public function createAccount($response, $request, $auth)
     {
         $authedUser = $auth->authenticate();
         if ($authedUser->user_type_id == 0) {
-            $user = new Auth();
-            $request->validateAll($request->all(), [
+            $data = $request->validateAll($request->all(), [
                 'username' => 'required|string',
                 'email' => 'required|email|unique:users',
-                'password' => 'required|min:5|max:15'
+                'password' => 'required|min:5|max:15',
+                'phone' => 'number',
+                'major' => 'string',
+                'minor' => 'string'
             ]);
             if ($request->errors()) {
                 return $request->errors();
             }
-            $user->username = $request->input('username');
-            $user->email = $request->input('email');
-            $user->password = $user->hash($request->input('password'));
-            $user->user_type_id = 1;
+            $data->password = Auth::hash($data->password);
             $avatar = $request->file('avatar');
             if ($avatar) {
                 $avatar_name = time() . rand() . $avatar->name;
                 $uploaded_avatar = Helpers::movePublicPath($avatar, $avatar_name, 'uploads');
                 if ($uploaded_avatar) {
-                    $user->avatar = $avatar_name;
+                    $data->avatar = $avatar_name;
                 }
             }
-            $data = $user->save();
-            return $response->status(200)->json($data);
+
+            $query = Auth::create($data);
+            return $response->status(200)->json($query);
         }
         return $response->status(401)->json(['message' => 'Credentials Failed.']);
     }
@@ -70,7 +72,7 @@ class AuthController
     {
         $user = $auth->authenticate();
         if ($user->user_type_id == 0) {
-            $query = Auth::query()->whereNot('id', $user->id)->fetch();
+            $query = Auth::query()->whereNot('id', $user->id)->paginate($request->input('page'), 10);
             if ($query)
                 return $response->status(200)->json($query);
             else

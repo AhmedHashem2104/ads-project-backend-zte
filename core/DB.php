@@ -342,6 +342,37 @@ class DB extends Database
       return array();
     }
   }
+
+  public static function paginate($page, $offset)
+  {
+    $sql = "";
+    $sql2 = "";
+    foreach (self::$instance['sql'] as $key => $value) {
+      if ($key != 0)
+        $sql2 .= $value;
+      $sql .= $value;
+    }
+    $testQuery = DB::rawOneQuery("SELECT COUNT(*) FROM " . self::$instance['table'] . $sql2);
+    if ($testQuery) {
+      $numrows = intval($testQuery['COUNT(*)']);
+      $numpages = ceil($numrows / $offset);
+    } else {
+      return false;
+    }
+    $page = intval($page);
+    $query = DB::connect()->query($sql . " LIMIT " . $offset . " OFFSET " . ($page - 1) * $offset);
+    if (!$query) {
+      return false;
+    }
+    if ($query->rowCount() > 0) {
+      while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+        $data[] = $row;
+      }
+      return array('num_pages' => $numpages, 'num_rows' => $numrows, 'previous_page' => $page - 1, 'current_page' => $page, 'next_page' => $page + 1, 'data' => $data);
+    } else {
+      return array();
+    }
+  }
   // Fetch All Data From Database.
   public static function fetchAll()
   {

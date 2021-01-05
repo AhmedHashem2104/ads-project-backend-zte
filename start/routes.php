@@ -17,7 +17,7 @@ Route::delete('/api/v1/admin/deleteAccount/:id', 'Admin/AuthController.deleteAcc
 
 Route::put('/api/v1/admin/updateAccount/:id', 'Admin/AuthController.updateAccount');
 
-Route::get('/api/v1/admin/getAccounts', 'Admin/AuthController.getAccounts');
+Route::get('/api/v1/admin/getAccounts/:page', 'Admin/AuthController.getAccounts');
 
 Route::get('/api/v1/admin/getAccount/:id', 'Admin/AuthController.getAccount');
 
@@ -40,6 +40,8 @@ Route::post('/api/v1/admin/createLesson/:courseId', 'Admin/LessonsController.cre
 Route::put('/api/v1/admin/updateLesson/:courseId/:lessonId', 'Admin/LessonsController.updateLesson');
 
 Route::delete('/api/v1/admin/deleteLesson/:courseId/:lessonId', 'Admin/LessonsController.deleteLesson');
+
+Route::post('/api/v1/admin/joinCourse', 'Admin/JoinCourseController.joinCourse');
 
 
 

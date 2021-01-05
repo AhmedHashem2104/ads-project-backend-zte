@@ -15,8 +15,10 @@ class Route
                         continue;
                     } else if (strstr($value, ':')) {
                         $one_path = str_replace(':', '', $path_test[$key]);
-                        @$_GET[$one_path] = $path_info_test[$key];
-                        $checked_path .= "/" . $_GET[$one_path];
+                        if (isset($path_info_test[$key])) {
+                            $_GET[$one_path] = $path_info_test[$key];
+                            $checked_path .= "/" . $_GET[$one_path];
+                        }
                     } else {
                         $checked_path .= "/" . $path_test[$key];
                     }
@@ -57,8 +59,10 @@ class Route
                         continue;
                     } else if (strstr($value, ':')) {
                         $one_path = str_replace(':', '', $path_test[$key]);
-                        @$_GET[$one_path] = $path_info_test[$key];
-                        $checked_path .= "/" . $_GET[$one_path];
+                        if (isset($path_info_test[$key])) {
+                            $_GET[$one_path] = $path_info_test[$key];
+                            $checked_path .= "/" . $_GET[$one_path];
+                        }
                     } else {
                         $checked_path .= "/" . $path_test[$key];
                     }
@@ -99,8 +103,10 @@ class Route
                         continue;
                     } else if (strstr($value, ':')) {
                         $one_path = str_replace(':', '', $path_test[$key]);
-                        @$_GET[$one_path] = $path_info_test[$key];
-                        $checked_path .= "/" . $_GET[$one_path];
+                        if (isset($path_info_test[$key])) {
+                            $_GET[$one_path] = $path_info_test[$key];
+                            $checked_path .= "/" . $_GET[$one_path];
+                        }
                     } else {
                         $checked_path .= "/" . $path_test[$key];
                     }
@@ -141,8 +147,10 @@ class Route
                         continue;
                     } else if (strstr($value, ':')) {
                         $one_path = str_replace(':', '', $path_test[$key]);
-                        @$_GET[$one_path] = $path_info_test[$key];
-                        $checked_path .= "/" . $_GET[$one_path];
+                        if (isset($path_info_test[$key])) {
+                            $_GET[$one_path] = $path_info_test[$key];
+                            $checked_path .= "/" . $_GET[$one_path];
+                        }
                     } else {
                         $checked_path .= "/" . $path_test[$key];
                     }
@@ -183,8 +191,10 @@ class Route
                         continue;
                     } else if (strstr($value, ':')) {
                         $one_path = str_replace(':', '', $path_test[$key]);
-                        @$_GET[$one_path] = $path_info_test[$key];
-                        $checked_path .= "/" . $_GET[$one_path];
+                        if (isset($path_info_test[$key])) {
+                            $_GET[$one_path] = $path_info_test[$key];
+                            $checked_path .= "/" . $_GET[$one_path];
+                        }
                     } else {
                         $checked_path .= "/" . $path_test[$key];
                     }

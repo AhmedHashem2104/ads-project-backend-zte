@@ -1,6 +1,5 @@
 <?php
 
-
 class Request
 {
 
@@ -42,7 +41,7 @@ class Request
             $query = DB::rawQuery("SELECT * FROM " . $new_data[1] . " WHERE " . $item . " = '$src[$item]'");
 
             if ($query) {
-              self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
+              self::addError($item, $item . ' should be unique.');
             }
           }
         } else {
@@ -88,8 +87,6 @@ class Request
 
 
     foreach ($rules as $item => $item_value) {
-
-
       $data = explode('|', $item_value);
       foreach ($data as $value) {
         $new_data = explode(':', $value);
@@ -109,12 +106,11 @@ class Request
 
             if ($query) {
 
-              self::addError($item, $item . ' should be unique in  ' . $new_data[1] . ' table');
+              self::addError($item, $item . ' should be unique.');
             }
           }
         } else {
           if ($value == 'required' and (!isset($src[$item]) or empty($src[$item]))) {
-
             self::addError($item, $item . ' is required');
           }
           if ($value == 'slug') {
