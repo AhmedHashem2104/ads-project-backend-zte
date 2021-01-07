@@ -81,6 +81,19 @@ class AuthController
         return $response->status(401)->json(['message' => 'Credentials Failed.']);
     }
 
+    public function getInstructors($response, $request, $auth)
+    {
+        $user = $auth->authenticate();
+        if ($user->user_type_id == 0) {
+            $query = Auth::query()->where('user_type_id', 1)->where('status', 1)->fetch();
+            if ($query)
+                return $response->status(200)->json($query);
+            else
+                return $response->status(400)->json(['message' => 'No Data Found.']);
+        }
+        return $response->status(401)->json(['message' => 'Credentials Failed.']);
+    }
+
     public function getAccount($response, $request, $auth)
     {
         $user = $auth->authenticate();

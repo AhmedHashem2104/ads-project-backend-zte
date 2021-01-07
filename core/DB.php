@@ -255,19 +255,20 @@ class DB extends Database
   {
     if (self::$instance['counter'] == 0) {
       self::$instance['sql'][] = " WHERE " . $parameter . " NOT IN (";
-      foreach ($operators as $operator) {
-        if (!next($operators)) {
+      foreach ($operators as $key => $operator) {
+        if ($key == sizeof($operators) - 1) {
           self::$instance['sql'][] = "'" . $operator . "'";
         } else {
           self::$instance['sql'][] = "'" . $operator . "' ,";
         }
       }
       self::$instance['sql'][] = ")";
+
       self::$instance['counter']++;
     } else {
       self::$instance['sql'] = " AND " . $parameter . " NOT IN (";
-      foreach ($operators as $operator) {
-        if (!next($operators)) {
+      foreach ($operators as $key => $operator) {
+        if ($key == sizeof($operators) - 1) {
           self::$instance['sql'][] = "'" . $operator . "'";
         } else {
           self::$instance['sql'][] = "'" . $operator . "' ,";
@@ -275,6 +276,7 @@ class DB extends Database
       }
       self::$instance['sql'][] = ")";
     }
+
     $self = new self;
     return $self;
   }

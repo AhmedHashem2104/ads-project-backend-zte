@@ -23,13 +23,15 @@ Route::get('/api/v1/admin/getAccount/:id', 'Admin/AuthController.getAccount');
 
 Route::post('/api/v1/admin/createCourse', 'Admin/CoursesController.createCourse');
 
-Route::get('/api/v1/admin/getCourses', 'Admin/CoursesController.getCourses');
+Route::get('/api/v1/admin/getCourses/:page', 'Admin/CoursesController.getCourses');
+
+Route::post('/api/v1/admin/getAllCourses', 'Admin/CoursesController.getAllCourses');
 
 Route::get('/api/v1/admin/getCourse/:id', 'Admin/CoursesController.getCourse');
 
 Route::put('/api/v1/admin/updateCourse/:id', 'Admin/CoursesController.updateCourse');
 
-Route::put('/api/v1/admin/deleteCourse/:id', 'Admin/CoursesController.deleteCourse');
+Route::delete('/api/v1/admin/deleteCourse/:id', 'Admin/CoursesController.deleteCourse');
 
 Route::get('/api/v1/admin/getLessons/:courseId', 'Admin/LessonsController.getLessons');
 
@@ -43,6 +45,8 @@ Route::delete('/api/v1/admin/deleteLesson/:courseId/:lessonId', 'Admin/LessonsCo
 
 Route::post('/api/v1/admin/joinCourse', 'Admin/JoinCourseController.joinCourse');
 
+Route::get('/api/v1/admin/getRelatedCourses/:user_id', 'Admin/JoinCourseController.getRelatedCourses');
 
+Route::get('/api/v1/admin/getInstructors', 'Admin/AuthController.getInstructors');
 
 // Instructor

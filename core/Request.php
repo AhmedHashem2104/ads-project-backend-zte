@@ -421,42 +421,41 @@ class Request
     $input = file_get_contents('php://input');
 
     @preg_match('/boundary=(.*)$/', $_SERVER['CONTENT_TYPE'], $matches);
-
-    if ($matches) {
+    if (!empty($matches)) {
 
       $boundary = $matches[1];
 
       $a_blocks = preg_split("/-+$boundary/", $input);
 
       array_pop($a_blocks);
-    } else {
 
-      parse_str($input, $a_blocks);
-    }
+      foreach ($a_blocks as $id => $block) {
 
-    foreach ($a_blocks as $id => $block) {
+        if (empty($block) or strpos($block, "Content-Type: image"))
 
-      if (empty($block) or strpos($block, "Content-Type: image"))
-
-        continue;
+          continue;
 
 
-      if (strpos($block, 'application/octet-stream') !== FALSE) {
+        if (strpos($block, 'application/octet-stream') !== FALSE) {
 
-        preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
-      } else {
+          preg_match("/name=\"([^\"]*)\".*stream[\n|\r]+([^\n\r].*)?$/s", $block, $matches);
+        } else {
 
-        preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
-      }
+          preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
+        }
 
-      if ($matches) {
+        if ($matches) {
 
-        $all->{$matches[1]} = $matches[2];
-      } else {
+          $all->{$matches[1]} = $matches[2];
+        } else {
 
-        $all->{$id} = $block;
+          $all->{$id} = $block;
+        }
       }
     }
+    // else {
+    //   parse_str($input, $a_blocks);
+    // }
 
     // Decode the JSON object
 
@@ -467,11 +466,10 @@ class Request
     if (is_array($object)) {
 
       foreach ($object as $key => $value) {
-        $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+
         $all->{$key} = $value;
       }
     }
-
     if (isset($_POST) and !empty($_POST)) {
 
       foreach ($_POST as $key => $value) {
@@ -480,7 +478,6 @@ class Request
     }
 
     if (isset($_GET) and !empty($_GET)) {
-
       foreach ($_GET as $key => $value) {
         $all->{$key} = $value;
       }

@@ -8,7 +8,7 @@ class CoursesController
         $user = Auth::authenticate();
         if ($user->user_type_id == 0) {
             $rawData = $request->except(['slug']);
-            if ($rawData->name)
+            if (isset($rawData->name))
                 $rawData->slug = $rawData->name;
             $data = $request->validateAll($rawData, [
                 'name' => 'required|string|unique:courses',
@@ -29,11 +29,24 @@ class CoursesController
         return $response->status(401)->json(['message' => 'Credentials Failed.']);
     }
 
-    public function getCourses($response)
+    public function getCourses($response, $request)
     {
         $user = Auth::authenticate();
         if ($user->user_type_id == 0) {
-            $query = Course::all();
+            $query = Course::query()->paginate($request->input('page'), 10);
+            if (sizeof($query) > 0)
+                return $response->status(200)->json($query);
+            return $response->status(400)->json(['message' => 'No Data Found.']);
+        }
+        return $response->status(401)->json(['message' => 'Credentials Failed.']);
+    }
+
+    public function getAllCourses($response, $request)
+    {
+        $user = Auth::authenticate();
+        if ($user->user_type_id == 0) {
+            $data = $request->all();
+            $query = Course::query()->whereNotIn('id', $data->courses)->fetch();
             if (sizeof($query) > 0)
                 return $response->status(200)->json($query);
             return $response->status(400)->json(['message' => 'No Data Found.']);
