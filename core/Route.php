@@ -5,7 +5,7 @@ class Route
     public static function get($path, $controller)
     {
         if ($_SERVER['REQUEST_METHOD'] == "GET") {
-            $path_info = $_SERVER['REQUEST_URI'];
+            $path_info = urldecode($_SERVER['REQUEST_URI']);
             $path_info_test = explode('/', $path_info);
             if ($path != '/') {
                 $path_test = explode('/', $path);
@@ -49,7 +49,7 @@ class Route
     public static function post($path, $controller)
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            $path_info = $_SERVER['REQUEST_URI'];
+            $path_info = urldecode($_SERVER['REQUEST_URI']);
             $path_info_test = explode('/', $path_info);
             if ($path != '/') {
                 $path_test = explode('/', $path);
@@ -93,7 +93,7 @@ class Route
     public static function put($path, $controller)
     {
         if ($_SERVER['REQUEST_METHOD'] == "PUT") {
-            $path_info = $_SERVER['REQUEST_URI'];
+            $path_info = urldecode($_SERVER['REQUEST_URI']);
             $path_info_test = explode('/', $path_info);
             if ($path != '/') {
                 $path_test = explode('/', $path);
@@ -137,7 +137,7 @@ class Route
     public static function patch($path, $controller)
     {
         if ($_SERVER['REQUEST_METHOD'] == "PATCH") {
-            $path_info = $_SERVER['REQUEST_URI'];
+            $path_info = urldecode($_SERVER['REQUEST_URI']);
             $path_info_test = explode('/', $path_info);
             if ($path != '/') {
                 $path_test = explode('/', $path);
@@ -181,7 +181,7 @@ class Route
     public static function delete($path, $controller)
     {
         if ($_SERVER['REQUEST_METHOD'] == "DELETE") {
-            $path_info = $_SERVER['REQUEST_URI'];
+            $path_info = urldecode($_SERVER['REQUEST_URI']);
             $path_info_test = explode('/', $path_info);
             if ($path != '/') {
                 $path_test = explode('/', $path);

@@ -1,41 +1,25 @@
 <?php
 
+use Jenssegers\Blade\Blade;
 
 class Response
 {
-    public static function render($parm, $data)
-    {
-        $GLOBALS['data'] = array($parm => $data);
-    }
-
     public static function view($parm, $data = array(false))
     {
-
-        if (file_exists(dirname(dirname(__FILE__)) . '/views/' . $parm . '.zte.twig')) {
-
-            $loader = new \Twig\Loader\FilesystemLoader('views');
-
-            $twig = new \Twig\Environment($loader);
-
-            $lexer = new \Twig\Lexer($twig, [
-                'tag_comment'  => ['{*', '*}'],
-                'tag_block'    => ['{%', '%}'],
-                'tag_variable' => ['{{', '}}'],
-            ]);
-
-            $twig->setLexer($lexer);
-
-            if (!isset($data)) {
-                if (!empty($GLOBALS['data'])) {
-                    echo 'asas';
-                    echo $twig->render($parm . '.zte.twig', $GLOBALS['data'][$parm]);
-                } else {
-                    echo $twig->render($parm . '.zte.twig');
-                }
+        if (file_exists(dirname(dirname(__FILE__)) . '/views/' . $parm . '.blade.php')) {
+            // header("Location: /contact-us");
+            $blade = new Blade('views', 'cache');
+            if ($data) {
+                echo $blade->render($parm, $data);
             } else {
-                echo $twig->render($parm . '.zte.twig', $data);
+                echo $blade->render($parm);
             }
         }
+    }
+
+    public static function back()
+    {
+        header('Location: ' . $_SERVER['HTTP_REFERER']);
     }
 
     public static function status($statusCode)

@@ -44,6 +44,16 @@ class DB extends Database
       return false;
     }
   }
+  // Insert Query.
+  public static function insertQuery($sql)
+  {
+    $query = Database::connect()->query($sql);
+    if ($query) {
+      return true;
+    } else {
+      return false;
+    }
+  }
   // Delete Onr Or More Than One Row.
   public static function deleteQuery($sql)
   {
@@ -77,10 +87,10 @@ class DB extends Database
   {
     // self::$instance['id'] = $value;
     if (self::$instance['counter'] == 0) {
-      self::$instance['sql'][] = " WHERE " . $parameter . " = " . $value;
+      self::$instance['sql'][] = " WHERE " . $parameter . " = '" . $value . "'";
       self::$instance['counter']++;
     } else {
-      self::$instance['sql'][] = " AND " . $parameter . " = " . $value;
+      self::$instance['sql'][] = " AND " . $parameter . " = '" . $value . "'";
     }
 
     $self = new self;
@@ -89,7 +99,17 @@ class DB extends Database
   // orWhere Conditions in SQL.
   public static function orWhere($parameter, $value)
   {
-    self::$instance['sql'][] = " OR " . $parameter . $parameter . " = " . $value;
+    self::$instance['sql'][] = " OR " . $parameter . " = '" . $value . "'";
+    $self = new self;
+    return $self;
+  }
+  // Limit
+  public static function limit($number, $offset = false)
+  {
+    if ($offset)
+      self::$instance['sql'][] = " LIMIT " . $number . " , " . $offset;
+    else
+      self::$instance['sql'][] = " LIMIT " . $number;
     $self = new self;
     return $self;
   }
@@ -97,10 +117,10 @@ class DB extends Database
   public static function whereNot($parameter, $value)
   {
     if (self::$instance['counter'] == 0) {
-      self::$instance['sql'][] = " WHERE NOT " . $parameter . " = " . $value;
+      self::$instance['sql'][] = " WHERE NOT " . $parameter . " = '" . $value . "'";
       self::$instance['counter']++;
     } else {
-      self::$instance['sql'][] = " AND NOT " . $parameter . " = " . $value;
+      self::$instance['sql'][] = " AND NOT " . $parameter . " = '" . $value . "'";
     }
     $self = new self;
     return $self;
@@ -108,7 +128,7 @@ class DB extends Database
   // orWhereNot Conditions in SQL.
   public static function orWhereNot($parameter, $value)
   {
-    self::$instance['sql'][] = " OR NOT " . $parameter . $parameter . " = " . $value;
+    self::$instance['sql'][] = " OR NOT " . $parameter . $parameter . " = '" . $value . "'";
     $self = new self;
     return $self;
   }
@@ -328,9 +348,12 @@ class DB extends Database
   // Fetch All Data From Database.
   public static function fetch()
   {
+    self::$instance['counter'] = 0;
     $sql = "";
+
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
+
     $query = DB::connect()->query($sql);
     if (!$query) {
       return false;
@@ -347,6 +370,8 @@ class DB extends Database
 
   public static function paginate($page, $offset)
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     $sql2 = "";
     foreach (self::$instance['sql'] as $key => $value) {
@@ -378,6 +403,8 @@ class DB extends Database
   // Fetch All Data From Database.
   public static function fetchAll()
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     foreach (self::$instance['sql'] as  $value)
       $sql .= $value;
@@ -397,6 +424,8 @@ class DB extends Database
   // Fetch One Row From Database.
   public static function fetchOne()
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
@@ -414,6 +443,8 @@ class DB extends Database
   // Fetch First Row Data From Database.
   public static function first()
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
@@ -432,6 +463,8 @@ class DB extends Database
   // Fetch Last Row Data From Database.
   public static function last()
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;
@@ -449,6 +482,8 @@ class DB extends Database
   //Create New Row In Database.
   public static function creator($table, $fields)
   {
+    self::$instance['counter'] = 0;
+
     $implodeFields = implode(',', array_keys($fields));
     $implodePlaceholder = implode(", :", array_keys($fields));
     try {
@@ -466,13 +501,15 @@ class DB extends Database
   //Delete One Or More Than One Row From Database.
   public static function remove($table, $id = false, $value = false)
   {
+    self::$instance['counter'] = 0;
+
     self::$instance['table'] = $table;
     self::$instance['id'] = $id;
     self::$instance['value'] = $value;
     if (self::$instance['id'] and !self::$instance['value']) {
-      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE id = " . self::$instance['id'];
+      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE id = '" . self::$instance['id'] . "'";
     } else if (self::$instance['id'] and self::$instance['value']) {
-      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE " . self::$instance['id'] . " = " . self::$instance['value'];
+      $sql = "DELETE FROM " . self::$instance['table'] . " WHERE " . self::$instance['id'] . " = '" . self::$instance['value'] . "'";
     } else {
       $sql = "DELETE FROM " . self::$instance['table'];
     }
@@ -484,6 +521,8 @@ class DB extends Database
   //Update One Or More Than One Row In Database.
   public function update($fields)
   {
+    self::$instance['counter'] = 0;
+
     unset($fields->id);
     $st = "";
     $counter = 1;
@@ -522,6 +561,8 @@ class DB extends Database
   //Update One Or More Than One Row In Database.
   public static function modify($table, $fields, $id = false, $value = false)
   {
+    self::$instance['counter'] = 0;
+
     self::$instance['table'] = $table;
     self::$instance['id'] = $id;
     self::$instance['value'] = $value;
@@ -570,6 +611,8 @@ class DB extends Database
   //Update One Or More Than One Row In Database.
   public function delete()
   {
+    self::$instance['counter'] = 0;
+
     $sql = "";
     foreach (self::$instance['sql'] as $value)
       $sql .= $value;

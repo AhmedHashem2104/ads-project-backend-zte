@@ -1,6 +1,8 @@
 {
     "require": {
         "vlucas/phpdotenv": "^5.2",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "jenssegers/blade": "^1.4",
+        "illuminate/view": "^8.22"
     }
 }
