@@ -255,7 +255,7 @@
               <div class="mu-testimonial-item">
                 <div class="mu-testimonial-quote">
                   <blockquote>
-                    <p>{{$client['comment']}}</p>
+                    <a href="{{$client['link']}}" target="_blank"><p>{{$client['link']}}</p></a>
                   </blockquote>
                 </div>
                 <div class="mu-testimonial-img">
