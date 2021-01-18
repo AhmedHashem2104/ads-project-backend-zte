@@ -29,7 +29,7 @@
                     <div class="col-md-12">
                       <article class="mu-blog-single-item">
                         <figure class="mu-blog-single-img">
-                          <a href="#"><img alt="img" src="/public/uploads/{{$slider['img']}}"></a>
+                          <a href="#"><img alt="img" src="https://dashboard.qodeex.com/uploads/{{$slider['img']}}"></a>
                           <figcaption class="mu-blog-caption">
                             <h3><a>{{json_decode($slider['title'])->$lang}}</a></h3>
                           </figcaption>

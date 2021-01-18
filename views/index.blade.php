@@ -8,7 +8,7 @@
 
         <div style="display:flex;align-items:center;height:500px;">
 
-          <img src="/public/uploads/{{$slider['img']}}" style="width: 50%;height:70%;margin-right:5px;" alt="img">
+          <img src="https://dashboard.qodeex.com/uploads/{{$slider['img']}}" style="width: 50%;height:70%;margin-right:5px;" alt="img">
 
       <div>
         <h2>{{json_decode($slider['title'])->$lang}}</h2>
@@ -29,7 +29,7 @@
             <!-- Start single service -->
             @foreach ($categories as $category)
                 <div class="mu-service-single">
-              <span><img src="/public/uploads/{{$category['img']}}" style="width:100px;height:100px;"></span>
+              <span><img src="https://dashboard.qodeex.com/uploads/{{$category['img']}}" style="width:100px;height:100px;"></span>
               <h3 style="font-weight:bold;">{{json_decode($category['title'])->$lang}}</h3>
               <p style="font-weight:bold;">{{json_decode($category['description'])->$lang}}</p>
               <a href="{{$lang == 'en' ? '/en' : '/ar'}}/service/{{json_decode($category['page'])->$lang}}" class="btn btn-warning" style="color:#ff5733;background-color:white;border-color:white;">{{$lang == 'en' ? 'Read More' : 'قراءة المزيد'}}</a>
@@ -65,7 +65,7 @@
               <div class="col-lg-6 col-md-6">
                 <div class="mu-about-us-right">
 
-                    <img src="/public/uploads/{{$about['img']}}" style="width:100%;" class="col-lg-12" alt="img">
+                    <img src="https://dashboard.qodeex.com/uploads/{{$about['img']}}" style="width:100%;" class="col-lg-12" alt="img">
 
                 </div>
               </div>
@@ -128,7 +128,7 @@
      <div class="col-lg-6 col-md-6 col-xs-12">
                 <div class="mu-latest-course-single">
                   <figure class="mu-latest-course-img">
-                    <a target="_blank" href="{{$feature['link']}}"><img src="/public/uploads/{{$feature['img']}}" alt="img"></a>
+                    <a target="_blank" href="{{$feature['link']}}"><img src="https://dashboard.qodeex.com/uploads/{{$feature['img']}}" alt="img"></a>
                   </figure>
                   <div class="mu-latest-course-single-content">
                     <h4><a target="_blank" href="{{$feature['link']}}">{{json_decode($feature['title'])->$lang}}</a></h4>
@@ -172,7 +172,7 @@
                   <div class="col-lg-4 col-md-4 col-xs-12" style="margin-bottom:10px;">
                 <div class="mu-latest-course-single">
                   <figure class="mu-latest-course-img">
-                    <img style="width: 100%;height:auto;" src="/public/uploads/{{$abo['img']}}" alt="img">
+                    <img style="width: 100%;height:auto;" src="https://dashboard.qodeex.com/uploads/{{$abo['img']}}" alt="img">
                   </figure>
                   <div class="mu-latest-course-single-content">
                     <h4>{{json_decode($abo['title'])->$lang}}</h4>
@@ -212,7 +212,7 @@
                     <div class="col-lg-3 col-md-3  col-sm-6">
                   <div class="mu-our-teacher-single">
                     <figure class="mu-our-teacher-img">
-                      <img src="/public/uploads/{{$team['img']}}" alt="teacher img">
+                      <img src="https://dashboard.qodeex.com/uploads/{{$team['img']}}" alt="teacher img">
                       <div class="mu-our-teacher-social">
                         <a target="_blank" href="{{$team['facebook']}}"><span class="fa fa-facebook"></span></a>
                         <a target="_blank" href="{{$team['linkedin']}}"><span class="fa fa-linkedin"></span></a>
@@ -259,7 +259,7 @@
                   </blockquote>
                 </div>
                 <div class="mu-testimonial-img">
-                  <img src="/public/uploads/{{$client['img']}}" alt="img">
+                  <img src="https://dashboard.qodeex.com/uploads/{{$client['img']}}" alt="img">
                 </div>
                 <div class="mu-testimonial-info">
                   <h4><b>{{$client['name']}}</b></h4>
@@ -296,7 +296,7 @@
                      <div class="col-md-2 col-sm-2">
                   <article class="mu-blog-single-item">
                     <figure class="mu-blog-single-img">
-                     <img style="width: 100%;" src="/public/uploads/{{$partner['logo']}}" alt="img">
+                     <img style="width: 100%;" src="https://dashboard.qodeex.com/uploads/{{$partner['logo']}}" alt="img">
                     </figure>
                   </article>
                 </div>

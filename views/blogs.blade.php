@@ -47,12 +47,12 @@
                   <div class="mu-single-gallery">
                     <div class="mu-single-gallery-item">
                       <div class="mu-single-gallery-img">
-                        <a href="#"><img alt="img" src="/public/uploads/{{$blog['img']}}"></a>
+                        <a href="#"><img alt="img" src="https://dashboard.qodeex.com/uploads/{{$blog['img']}}"></a>
                       </div>
                       <div class="mu-single-gallery-info">
                         <div class="mu-single-gallery-info-inner">
                           <h4>{{json_decode($blog['title'])->$lang}}</h4>
-                          <a href="/public/uploads/{{$blog['img']}}" data-fancybox-group="gallery" class="fancybox"><span class="fa fa-eye"></span></a>
+                          <a href="https://dashboard.qodeex.com/uploads/{{$blog['img']}}" data-fancybox-group="gallery" class="fancybox"><span class="fa fa-eye"></span></a>
                           <a href="{{$lang == 'en' ? '/en' : '/ar'}}/blog/{{json_decode($blog['slug'])->$lang}}" class="aa-link"><span class="fa fa-link"></span></a>
                         </div>
                       </div>
