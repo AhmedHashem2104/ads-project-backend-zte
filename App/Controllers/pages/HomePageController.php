@@ -15,7 +15,7 @@ class HomePageController extends Controller
 
         $statistics = Statistic::query()->fetch();
 
-        $features = Feature::query()->fetch();
+        $features = Feature::query()->orderBy('id','DESC')->fetch();
 
         $abouts = About::query()->where('page', 'team')->fetch();
 

@@ -4,10 +4,10 @@
    <div class="container">
      <div class="row">
        <div class="col-md-12">
-         <div class="mu-page-breadcrumb-area">
+         <div class="mu-page-breadcrumb-area"  style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;' : ''}}">
            <h2>{{$lang == 'en' ? 'Blog' : 'مقالة'}}</h2>
            <ol class="breadcrumb">
-            <li><a href="/home">{{$lang == 'en' ? 'Home' : 'الرئيسية'}}</a></li>
+            <li><a href="{{$lang == 'en' ? '/en' : '/ar'}}/home">{{$lang == 'en' ? 'Home' : 'الرئيسية'}}</a></li>
             <li class="active">{{$lang == 'en' ? 'Blog' : 'مقالة'}}</li>
           </ol>
          </div>
@@ -30,13 +30,13 @@
                       <article class="mu-blog-single-item">
                         <figure class="mu-blog-single-img">
                           <a href="#"><img alt="img" src="https://dashboard.qodeex.com/uploads/{{$blog['img']}}"></a>
-                          <figcaption class="mu-blog-caption">
-                            <h3><a>{{json_decode($blog['title'])->$lang}}</a></h3>
-                          </figcaption>
+                          
+                            <h3 style="{{$lang == 'ar' ? 'direction:rtl;text-align:right;' : ''}}"><a>{{json_decode($blog['title'])->$lang}}</a></h3>
+                          
                         </figure>
 
-                        <div class="mu-blog-description">
-                          {{json_decode($blog['description'])->$lang}}
+                        <div class="mu-blog-description" style="{{$lang == 'ar' ? 'direction:rtl;text-align:right;' : ''}}">
+                          {!!json_decode($blog['description'])->$lang!!}
                         </div>
                         <!-- End blog social share -->
                       </article>

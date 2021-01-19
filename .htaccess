@@ -1,6 +1,5 @@
 RewriteEngine On
 
-
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.+)$ index.php/$1 [L]
@@ -9,3 +8,7 @@ RewriteCond %{HTTP:X-Forwarded-SSL} !on
 RewriteCond %{HTTP_HOST} ^algawhar\.com$ [OR]
 RewriteCond %{HTTP_HOST} ^www\.algawhar\.com$
 RewriteRule ^(.*)$ "https\:\/\/algawhar\.com\/$1" [R=301,L]
+RewriteCond %{HTTP_HOST} ^zte\.qodeex\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^www\.zte\.qodeex\.com$
+RewriteRule ^/?$ "https\:\/\/zte\.qodeex\.com\/en\/home" [R=301,L]
+

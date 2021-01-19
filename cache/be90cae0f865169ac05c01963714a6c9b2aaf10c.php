@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
-  <meta name="description" content="{{json_decode($info['description'])->$lang}}">
-  <meta name="keywords" content="{{json_decode($info['keywords'])->$lang}}">
+  <meta name="description" content="<?php echo e(json_decode($info['description'])->$lang); ?>">
+  <meta name="keywords" content="<?php echo e(json_decode($info['keywords'])->$lang); ?>">
   <meta name="author" content="Ahmed Hashem">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{$lang == 'en' ? 'Home - ' :' الرئيسية - ' }}{{json_decode($info['title'])->$lang }}</title>
+    <title><?php echo e($lang == 'en' ? 'Home - ' :' الرئيسية - '); ?><?php echo e(json_decode($info['title'])->$lang); ?></title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/public/icon.png" type="image/x-icon">
@@ -65,7 +65,7 @@
         .shadow-feature3:hover{
             box-shadow: 4px 4px 8px 4px rgba(255, 255, 255, 0.2), 4px 6px 20px 4px rgba(255, 255, 255, 0.19);
         }
-        @media screen and (max-width: 600px) {
+        @media  screen and (max-width: 600px) {
   #mobile-view {
     display: none;
   }
@@ -97,11 +97,11 @@ font-family: 'Cairo';
                                 <div class="mu-header-top-left">
                                     <div class="mu-top-email">
                                         <i class="fa fa-envelope"></i>
-                                        <a href="mailto:{{$info['phone']}}"><span>{{$info['email']}}</span></a>
+                                        <a href="mailto:<?php echo e($info['phone']); ?>"><span><?php echo e($info['email']); ?></span></a>
                                     </div>
                                     <div class="mu-top-phone">
                                         <i class="fa fa-phone"></i>
-                                        <a href="tel:{{$info['phone']}}"><span>{{$info['phone']}}</span></a>
+                                        <a href="tel:<?php echo e($info['phone']); ?>"><span><?php echo e($info['phone']); ?></span></a>
                                     </div>
                                 </div>
                             </div>
@@ -109,11 +109,11 @@ font-family: 'Cairo';
                                 <div class="mu-header-top-right">
                                     <nav>
                                         <ul class="mu-top-social-nav">
-                                            <li><a target="_blank" href="{{$info['facebook']}}"><span class="fa fa-facebook"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['twitter']}}"><span class="fa fa-twitter"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['instagram']}}"><span class="fa fa-instagram"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['linkedin']}}"><span class="fa fa-linkedin"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['github']}}"><span class="fa fa-github"></span></a></li>
+                                            <li><a target="_blank" href="<?php echo e($info['facebook']); ?>"><span class="fa fa-facebook"></span></a></li>
+                                            <li><a target="_blank" href="<?php echo e($info['twitter']); ?>"><span class="fa fa-twitter"></span></a></li>
+                                            <li><a target="_blank" href="<?php echo e($info['instagram']); ?>"><span class="fa fa-instagram"></span></a></li>
+                                            <li><a target="_blank" href="<?php echo e($info['linkedin']); ?>"><span class="fa fa-linkedin"></span></a></li>
+                                            <li><a target="_blank" href="<?php echo e($info['github']); ?>"><span class="fa fa-github"></span></a></li>
                                         </ul>
                                     </nav>
                                 </div>
@@ -140,29 +140,29 @@ font-family: 'Cairo';
           </button>
           <!-- LOGO -->
           <!-- TEXT BASED LOGO -->
-          <a class="navbar-brand" href="{{$lang == 'en' ? '/en' : '/ar'}}/home"><img style="width:100px;margin-top:-5px;display:flex;" src="/public/uploads/{{$info['logo']}}"></a>
+          <a class="navbar-brand" href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><img style="width:100px;margin-top:-5px;display:flex;" src="/public/uploads/<?php echo e($info['logo']); ?>"></a>
           <!-- IMG BASED LOGO  -->
           <!-- <a class="navbar-brand" href="index.html"><img src="/views/assets/img/logo.png" alt="logo"></a> -->
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-            <li class="active" style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'}}"><a href="{{$lang == 'en' ? '/en' : '/ar'}}/home">{{$lang == 'en' ? 'Home' : 'الرئيسية'}}</a></li>
-            <li class="dropdown" style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'}}">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{$lang == 'en' ? ' Services ' : ' الخدمات '}}<span class="fa fa-angle-down"></span></a>
+            <li class="active" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><?php echo e($lang == 'en' ? 'Home' : 'الرئيسية'); ?></a></li>
+            <li class="dropdown" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo e($lang == 'en' ? ' Services ' : ' الخدمات '); ?><span class="fa fa-angle-down"></span></a>
               <ul class="dropdown-menu" role="menu">
-                  @foreach ($experiences as $experience)
-                   <li style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'}}"><a href="{{$lang == 'en' ? '/en' : '/ar'}}/service/{{json_decode($experience['page'])->$lang}}"><img src="/public/{{$experience['icon']}}" style="width:30px;"> {{json_decode($experience['title'])->$lang}}</a></li>
-                  @endforeach
+                  <?php $__currentLoopData = $experiences; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $experience): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                   <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/service/<?php echo e(json_decode($experience['page'])->$lang); ?>"><img src="/public/<?php echo e($experience['icon']); ?>" style="width:30px;"> <?php echo e(json_decode($experience['title'])->$lang); ?></a></li>
+                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
               </ul>
             </li>
-            <li style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'}}"><a href="{{$lang == 'en' ? '/en/blogs' : '/ar/blogs'}}">{{$lang == 'en' ? 'Blogs' : 'المقالات'}}</a></li>
-            <li style="{{$lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'}}"><a href="{{$lang == 'en' ? '/en/contact-us' : '/ar/contact-us'}}">{{$lang == 'en' ? 'Contact Us' : 'تواصل معنا'}}</a></li>
-            @if ($lang == 'en')
+            <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en/blogs' : '/ar/blogs'); ?>"><?php echo e($lang == 'en' ? 'Blogs' : 'المقالات'); ?></a></li>
+            <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en/contact-us' : '/ar/contact-us'); ?>"><?php echo e($lang == 'en' ? 'Contact Us' : 'تواصل معنا'); ?></a></li>
+            <?php if($lang == 'en'): ?>
                 <li style="font-weight:bold;"><a href="/ar/home">عربى</a></li>
-            @elseif ($lang == 'ar')
+            <?php elseif($lang == 'ar'): ?>
                 <li style="text-align:right;direction:rtl;font-weight:bold;"><a href="/en/home">English</a></li>
-            @endif
-            {{-- <li><a href="#" id="mu-search-icon"><i class="fa fa-search"></i></a></li> --}}
+            <?php endif; ?>
+            
           </ul>
         </div>
         <!--/.nav-collapse -->
@@ -173,73 +173,20 @@ font-family: 'Cairo';
 
 
 
-    @yield('content')
+    <?php echo $__env->yieldContent('content'); ?>
 
 
 
     <!-- Start footer -->
     <footer id="mu-footer">
         <!-- start footer top -->
-        {{-- <div class="mu-footer-top">
-            <div class="container">
-                <div class="mu-footer-top-area">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="mu-footer-widget">
-                                <h4>Information</h4>
-                                <ul>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="">Features</a></li>
-                                    <li><a href="">Course</a></li>
-                                    <li><a href="">Event</a></li>
-                                    <li><a href="">Sitemap</a></li>
-                                    <li><a href="">Term Of Use</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="mu-footer-widget">
-                                <h4>Student Help</h4>
-                                <ul>
-                                    <li><a href="">Get Started</a></li>
-                                    <li><a href="#">My Questions</a></li>
-                                    <li><a href="">Download Files</a></li>
-                                    <li><a href="">Latest Course</a></li>
-                                    <li><a href="">Academic News</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="mu-footer-widget">
-                                <h4>News letter</h4>
-                                <p>Get latest update, news & academic offers</p>
-                                <form class="mu-subscribe-form">
-                                    <input type="email" placeholder="Type your Email">
-                                    <button class="mu-subscribe-btn" type="submit">Subscribe!</button>
-                                </form>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="mu-footer-widget">
-                                <h4>Contact</h4>
-                                <address>
-                                    <p>P.O. Box 320, Ross, California 9495, USA</p>
-                                    <p>Phone: (415) 453-1568 </p>
-                                    <p>Website: www.markups.io</p>
-                                    <p>Email: info@markups.io</p>
-                                </address>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> --}}
+        
         <!-- end footer top -->
         <!-- start footer bottom -->
         <div class="mu-footer-bottom">
             <div class="container">
                 <div class="mu-footer-bottom-area">
-                    <p style="font-size:18px;">&copy;{{$lang == 'en' ? ' All Right Reserved. Designed & Developed by ' : ' كل الحقوق محفوظة. صمم وطور بواسطة  '}}<a href="https://qodeex.com/{{$lang}}/home" target="_blank" rel="nofollow" style="color: #ff5733;">{{$lang == 'en' ? 'Qodeex for software and training' : 'كودكس للبرمجيات والتدريب'}}</a></p>
+                    <p style="font-size:18px;">&copy;<?php echo e($lang == 'en' ? ' All Right Reserved. Designed & Developed by ' : ' كل الحقوق محفوظة. صمم وطور بواسطة  '); ?><a href="https://qodeex.com/<?php echo e($lang); ?>/home" target="_blank" rel="nofollow" style="color: #ff5733;"><?php echo e($lang == 'en' ? 'Qodeex for software and training' : 'كودكس للبرمجيات والتدريب'); ?></a></p>
                 </div>
             </div>
         </div>
@@ -291,4 +238,4 @@ font-family: 'Cairo';
     </script>
 </body>
 
-</html>
+</html><?php /**PATH /home/qodeex/zte.qodeex.com/views/layouts/app.blade.php ENDPATH**/ ?>
