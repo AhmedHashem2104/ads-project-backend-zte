@@ -5,42 +5,40 @@ class HomePageController extends Controller
 
     public function index($response, $request)
     {
-        $info = Info::query()->first();
+        $info = DB::rawOneQuery("SELECT * FROM company ORDER BY company_id LIMIT 1");
 
-        $sliders = Slider::query()->whereNotLike('page', '%team%')->whereNotLike('page', '%services%')->fetch();
+        $sliders = Slider::query()->orderBy('slider_id', 'DESC')->fetch();
 
-        $categories = Category::query()->fetch();
+        $services = DB::rawQuery("SELECT * FROM services ORDER BY order_no DESC");
 
-        $about = About::query()->where('id', 1)->first();
+        $about = DB::rawOneQuery("SELECT * FROM ours WHERE our_id = 1");
 
         $statistics = Statistic::query()->fetch();
 
-        $features = Feature::query()->orderBy('id','DESC')->fetch();
+        $clients = DB::rawQuery("SELECT * FROM clients ORDER BY client_id DESC");
 
-        $abouts = About::query()->where('page', 'team')->fetch();
+        $ours = DB::rawQuery("SELECT * FROM ours");
 
-        $teams = Team::query()->fetch();
+        $teams = Team::query()->orderBy('order_no')->fetch();
 
-        $clients = Client::query()->orderBy('id', 'DESC')->fetch();
+        // $clients = Client::query()->orderBy('id', 'DESC')->fetch();
 
-        $partners = Partner::query()->orderBy('id', 'DESC')->fetch();
+        // $partners = Partner::query()->orderBy('id', 'DESC')->fetch();
 
-        $experiences = Experience::query()->whereNotIn('id', [1, 2, 3])->fetch();
+        // $experiences = Experience::query()->whereNotIn('id', [1, 2, 3])->fetch();
 
         return $response->view(
             'index',
             [
                 'info' => $info,
                 'sliders' => $sliders,
-                'categories' => $categories,
+                'services' => $services,
                 'about' => $about,
                 'statistics' => $statistics,
-                'features' => $features,
-                'abouts' => $abouts,
+                'clients' => $clients,
+                'ours' => $ours,
                 'teams' => $teams,
                 'clients' => $clients,
-                'partners' => $partners,
-                'experiences' => $experiences,
                 'lang' => $request->input('lang')
             ]
         );

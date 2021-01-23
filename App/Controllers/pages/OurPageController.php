@@ -1,16 +1,16 @@
 <?php
 
-class ServicePageController
+class OurPageController
 {
     public function index($response, $request)
     {
         $info = DB::rawOneQuery("SELECT * FROM company ORDER BY company_id LIMIT 1");
-        $service = DB::rawOneQuery("SELECT * FROM services WHERE service_id = " . $request->input('id'));
+        $our = DB::rawOneQuery("SELECT * FROM ours WHERE our_id = " . $request->input('id'));
         return $response->view(
-            'service',
+            'our',
             [
                 'info' => $info,
-                'service' => $service,
+                'our' => $our,
                 'lang' => $request->input('lang')
             ]
         );

@@ -4,14 +4,12 @@ class ContactPageController
 {
     public function index($response, $request)
     {
-        $info = Info::query()->first();
-        $experiences = Experience::query()->whereNotIn('id', [1, 2, 3])->fetch();
+        $info = DB::rawOneQuery("SELECT * FROM company ORDER BY company_id LIMIT 1");
 
         return $response->view(
             'contact',
             [
                 'info' => $info,
-                'experiences' => $experiences,
                 'lang' => $request->input('lang')
             ]
         );
@@ -19,9 +17,9 @@ class ContactPageController
 
     public function sendMail($response, $request)
     {
-        $data = $request->only(['name', 'email', 'phone', 'subject', 'message']);
+        $data = $request->only(['person_name', 'email', 'phone', 'subject', 'message']);
         $data = $request->validateAll($data, [
-            'name' => 'required|string|min:5|max:100',
+            'person_name' => 'required|string|min:5|max:100',
             'email' => 'required|string|min:5|max:100',
             'phone' => 'required|min:11|max:15',
             'subject' => 'required|string|min:5|max:255',
