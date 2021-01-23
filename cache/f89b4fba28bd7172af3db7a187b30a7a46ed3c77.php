@@ -6,7 +6,7 @@
          <div class="mu-page-breadcrumb-area"  style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;' : ''); ?>">
            <h2><?php echo e($lang == 'en' ? 'Blog' : 'مقالة'); ?></h2>
            <ol class="breadcrumb">
-            <li><a href="/<?php echo e($lang); ?>/home"><?php echo e($lang == 'en' ? 'Home' : 'الرئيسية'); ?></a></li>
+            <li><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><?php echo e($lang == 'en' ? 'Home' : 'الرئيسية'); ?></a></li>
             <li class="active"><?php echo e($lang == 'en' ? 'Blog' : 'مقالة'); ?></li>
           </ol>
          </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                       <article class="mu-blog-single-item">
                         <figure class="mu-blog-single-img">
-                          <a href="#"><img alt="img" src="https://dashboard.qodeex.com/uploads/<?php echo e($blog['img']); ?>"></a>
+                          <a style="display:flex;justify-content:center;align-items:center;"><img style="width:80%;margin:auto;" alt="img" src="https://dashboard.qodeex.com/uploads/<?php echo e($blog['img']); ?>"></a>
                           
                             <h3 style="<?php echo e($lang == 'ar' ? 'direction:rtl;text-align:right;' : ''); ?>"><a><?php echo e(json_decode($blog['title'])->$lang); ?></a></h3>
                           

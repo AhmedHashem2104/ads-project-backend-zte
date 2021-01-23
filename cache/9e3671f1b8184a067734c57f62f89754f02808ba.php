@@ -5,17 +5,18 @@
 
 
     <?php $__currentLoopData = $sliders; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $slider): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-    <div class="col-lg-12" style="max-height:400px;display:flex;align-items: center;justify-content: left;<?php echo e($lang == 'ar' ? 'flex-direction: row-reverse;' : ''); ?>;">
-        <div class="col-lg-6">
+    <div>
+    <div id="slido" style="max-height:650px;width:100%;display:flex;align-items: center;<?php echo e($lang == 'ar' ? 'flex-direction: row-reverse;' : ''); ?>;">
+        
 
           <img src="https://dashboard.qodeex.com/uploads/<?php echo e($slider['img']); ?>" style="width:100%;height:100%;" alt="img">
-          </div>
-            <div class="col-lg-6 text-center" id="mobile-view">
-<h2 style="<?php echo e($lang == 'ar' ? 'text-align:right !important;direction:rtl;' : 'text-align:left !important;'); ?>"><?php echo e(json_decode($slider['title'])->$lang); ?></h2>
+<!--            <div class="col-lg-6 text-center" id="mobile-view">-->
+<!--<h2 style="<?php echo e($lang == 'ar' ? 'text-align:right !important;direction:rtl;' : 'text-align:left !important;'); ?>"><?php echo e(json_decode($slider['title'])->$lang); ?></h2>-->
         <!---->
-        <a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/contact-us" class="btn btn-primary" style="background-color:#ff5733;width:200px;height:50px;text-align:center;font-size:25px;border-color:white;"><?php echo e($lang == 'en' ? 'Contact Us' : 'تواصل معنا'); ?></a>
+<!--        <a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/contact-us" class="btn btn-primary" style="background-color:#ff5733;width:200px;height:50px;text-align:center;font-size:25px;border-color:white;"><?php echo e($lang == 'en' ? 'Contact Us' : 'تواصل معنا'); ?></a>-->
     
-    </div>
+<!--    </div>-->
+        </div>
         </div>
     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
@@ -177,7 +178,7 @@
                   <div class="col-lg-4 col-md-4 col-xs-12" style="margin-bottom:10px;">
                 <div class="mu-latest-course-single shadow-feature3" style="border-radius:5%;">
                   
-                    <img style="width: 100%;height:100%;border-radius:5% 5% 0% 0%;" src="https://dashboard.qodeex.com/uploads/<?php echo e($abo['img']); ?>" alt="img">
+                    <img style="width:100%;height:100%;border-radius:5% 5% 0% 0%;" src="https://dashboard.qodeex.com/uploads/<?php echo e($abo['img']); ?>" alt="img">
                  
                   <div class="mu-latest-course-single-content" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>">
                     <h4 style="font-weight:bold;"><?php echo e(json_decode($abo['title'])->$lang); ?></h4>

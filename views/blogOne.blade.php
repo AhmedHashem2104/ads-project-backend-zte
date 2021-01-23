@@ -29,7 +29,7 @@
                     <div class="col-md-12">
                       <article class="mu-blog-single-item">
                         <figure class="mu-blog-single-img">
-                          <a href="#"><img alt="img" src="https://dashboard.qodeex.com/uploads/{{$blog['img']}}"></a>
+                          <a style="display:flex;justify-content:center;align-items:center;"><img style="width:80%;margin:auto;" alt="img" src="https://dashboard.qodeex.com/uploads/{{$blog['img']}}"></a>
                           
                             <h3 style="{{$lang == 'ar' ? 'direction:rtl;text-align:right;' : ''}}"><a>{{json_decode($blog['title'])->$lang}}</a></h3>
                           

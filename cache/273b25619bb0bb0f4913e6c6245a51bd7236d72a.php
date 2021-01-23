@@ -28,7 +28,7 @@
                     <div class="col-md-12">
                       <article class="mu-blog-single-item">
                         <figure class="mu-blog-single-img">
-                          <a style="display:flex;justify-content:center;align-items:center;"><img style="width:60%;margin:auto;" alt="img" src="https://dashboard.qodeex.com/uploads/<?php echo e($slider['img']); ?>"></a>
+                          <a style="display:flex;justify-content:center;align-items:center;"><img style="width:80%;margin:auto;" alt="img" src="https://dashboard.qodeex.com/uploads/<?php echo e($slider['img']); ?>"></a>
                           <figcaption class="mu-blog-caption">
                             <h3 style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a><?php echo e(json_decode($slider['title'])->$lang); ?></a></h3>
                           </figcaption>
