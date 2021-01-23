@@ -6,21 +6,18 @@
 
 
   @foreach ($sliders as $slider)
-    <div class="slido" style="width:100%;{{$lang == 'ar' ? 'flex-direction: row-reverse;' : ''}}">
-
+   
 
       <div class="slido" style="background-image: url('https://dashboard.qodeex.com/editor/imgs/sliders/{{$slider['image']}}');
-height:700px;
    width: 100%;background-repeat:no-repeat;background-size:100% 100%;"></div>
 
-    </div>
   @endforeach
 
   <!-- Start single slider item -->
 </section>
 <!-- End Slider -->
 <!-- Start service  -->
-<section>
+<section id="mu-slider">
   <div class="container">
     <div class="row" style="margin-bottom:20px;">
 
@@ -193,7 +190,7 @@ height:700px;
         <div class="mu-testimonial-area">
           <!-- Start Title -->
           <div class="mu-title">
-            <h2 style="color:white;">{{$lang == 'en' ? 'Our Clients' : 'عملائنا' }}</h2>
+            <h2 style="color:white;">{{$lang == 'en' ? 'Our Top Clients' : 'أفضل عملائنا' }}</h2>
             <br>
           </div>
           <!-- End Title -->

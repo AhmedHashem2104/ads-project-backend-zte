@@ -5,12 +5,14 @@ class ContactPageController
     public function index($response, $request)
     {
         $info = DB::rawOneQuery("SELECT * FROM company ORDER BY company_id LIMIT 1");
+         $services = DB::rawQuery("SELECT * FROM services ORDER BY order_no DESC");
 
         return $response->view(
             'contact',
             [
                 'info' => $info,
-                'lang' => $request->input('lang')
+                'lang' => $request->input('lang'),
+                'services' => $services
             ]
         );
     }

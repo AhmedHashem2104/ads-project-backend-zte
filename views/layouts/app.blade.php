@@ -76,16 +76,15 @@
         }
          @media screen and (max-width: 600px) {
             .slido{
-                height:250px !important;
+                height:250px;
+            }
+        }
+        @media screen and (min-width: 600px) {
+            .slido{
+                height:750px;
             }
         }
 
-        @media screen and (min-width: 600px) {
-            #slido {
-                margin-top: 40px;
-                margin-bottom: 40px;
-            }
-        }
 
         * {
             font-weight: bold !important;
@@ -127,10 +126,10 @@
                                     <nav>
                                         <ul class="mu-top-social-nav">
                                             <li><a target="_blank" href="{{$info['facebook']}}"><span class="fa fa-facebook"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['youtube']}}"><span class="fa fa-youtube"></span></a></li>
-                                            <li><a target="_blank" href="{{$info['instagram']}}"><span class="fa fa-instagram"></span></a></li>
+                                            <!--<li><a target="_blank" href="{{$info['youtube']}}"><span class="fa fa-youtube"></span></a></li>-->
+                                            <li><a target="_blank" href="{{$info['instagram']}}"><span class="fa fa-linkedin"></span></a></li>
                                             <!-- <li><a target="_blank" href="{{$info['linkedin']}}"><span class="fa fa-linkedin"></span></a></li> -->
-                                            <!-- <li><a target="_blank" href="{{$info['github']}}"><span class="fa fa-github"></span></a></li> -->
+                                             <li><a target="_blank" href="{{$info['youtube']}}"><span class="fa fa-github"></span></a></li> 
                                         </ul>
                                     </nav>
                                 </div>

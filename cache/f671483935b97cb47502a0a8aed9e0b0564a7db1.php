@@ -36,7 +36,7 @@
                   <form class="contactform" id="sendMail" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>">
                     <p class="comment-form-author">
                       <label for="author"><?php echo e($lang == 'en' ? 'Name' : 'الاسم بالكامل'); ?> <span class="required">*</span></label>
-                      <input type="text" required="required" name="name">
+                      <input type="text" required="required" name="person_name">
                     </p>
                     <p class="comment-form-email">
                       <label for="email"><?php echo e($lang == 'en' ? 'Email' : 'البريد الإلكترونى'); ?> <span class="required">*</span></label>
@@ -62,8 +62,7 @@
               </div>
               <div class="col-md-6">
                 <div class="mu-contact-right">
-                        <?php echo $info['map']; ?>
-
+                        <iframe src="<?php echo $info['location']; ?>" style="width:100%;border-style:none;"></iframe>
                 </div>
               </div>
             </div>

@@ -5,11 +5,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
-  <meta name="description" content="<?php echo e(json_decode($info['description'])->$lang); ?>">
-  <meta name="keywords" content="<?php echo e(json_decode($info['keywords'])->$lang); ?>">
-  <meta name="author" content="Ahmed Hashem">
+    <meta name="description" content="<?php echo e($info['short_description_'.$lang]); ?>">
+    <meta name="keywords" content="<?php echo e($info['keywords_'.$lang]); ?>">
+    <meta name="author" content="Ahmed Hashem">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?php echo e($lang == 'en' ? 'Home - ' :' الرئيسية - '); ?><?php echo e(json_decode($info['title'])->$lang); ?></title>
+    <title><?php echo e($lang == 'en' ? 'Home - ' :' الرئيسية - '); ?><?php echo e($info['company_name_'.$lang]); ?></title>
 
     <!-- Favicon -->
     <link rel="shortcut icon" href="/public/icon.png" type="image/x-icon">
@@ -32,7 +32,7 @@
     <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,400italic,300,300italic,500,700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Cairo' rel="stylesheet" type="text/css" >
+    <link href='https://fonts.googleapis.com/css?family=Cairo' rel="stylesheet" type="text/css">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -41,45 +41,56 @@
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     <style>
-        .shadow-feature{
+        .shadow-feature {
             /*border:2px solid black;*/
-            border-radius:5%;
-            margin:5px;
+            border-radius: 5%;
+            margin: 5px;
         }
-        .shadow-feature:hover{
+
+        .shadow-feature:hover {
             box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2), 4px 6px 20px 4px rgba(0, 0, 0, 0.19);
         }
-        
-        .shadow-feature2{
+
+        .shadow-feature2 {
             /*border:2px solid black;*/
-            border-radius:5%;
+            border-radius: 5%;
         }
-        .shadow-feature2:hover{
+
+        .shadow-feature2:hover {
             box-shadow: 4px 4px 8px 4px rgba(0, 0, 0, 0.2), 4px 6px 20px 4px rgba(0, 0, 0, 0.19);
         }
-        
-        .shadow-feature3{
+
+        .shadow-feature3 {
             /*border:2px solid black;*/
-            border-radius:5%;
+            border-radius: 5%;
         }
-        .shadow-feature3:hover{
+
+        .shadow-feature3:hover {
             box-shadow: 4px 4px 8px 4px rgba(255, 255, 255, 0.2), 4px 6px 20px 4px rgba(255, 255, 255, 0.19);
         }
+
         @media  screen and (max-width: 600px) {
-  #mobile-view {
-    display: none;
-  }
-}
- @media  screen and (min-width: 600px) {
-  #slido {
-margin-top:40px;margin-bottom:40px;
-  }
-}
-*{
-    font-weight:bold !important;
-font-family: 'Cairo';
-    
-}
+            #mobile-view {
+                display: none;
+            }
+        }
+         @media  screen and (max-width: 600px) {
+            .slido{
+                height:250px;
+            }
+        }
+        @media  screen and (min-width: 600px) {
+            .slido{
+                height:750px;
+            }
+        }
+
+
+        * {
+            font-weight: bold !important;
+            font-family: 'Cairo';
+
+        }
     </style>
 </head>
 
@@ -115,10 +126,10 @@ font-family: 'Cairo';
                                     <nav>
                                         <ul class="mu-top-social-nav">
                                             <li><a target="_blank" href="<?php echo e($info['facebook']); ?>"><span class="fa fa-facebook"></span></a></li>
-                                            <li><a target="_blank" href="<?php echo e($info['twitter']); ?>"><span class="fa fa-twitter"></span></a></li>
-                                            <li><a target="_blank" href="<?php echo e($info['instagram']); ?>"><span class="fa fa-instagram"></span></a></li>
-                                            <li><a target="_blank" href="<?php echo e($info['linkedin']); ?>"><span class="fa fa-linkedin"></span></a></li>
-                                            <li><a target="_blank" href="<?php echo e($info['github']); ?>"><span class="fa fa-github"></span></a></li>
+                                            <!--<li><a target="_blank" href="<?php echo e($info['youtube']); ?>"><span class="fa fa-youtube"></span></a></li>-->
+                                            <li><a target="_blank" href="<?php echo e($info['instagram']); ?>"><span class="fa fa-linkedin"></span></a></li>
+                                            <!-- <li><a target="_blank" href="<?php echo e($info['linkedin']); ?>"><span class="fa fa-linkedin"></span></a></li> -->
+                                             <li><a target="_blank" href="<?php echo e($info['youtube']); ?>"><span class="fa fa-github"></span></a></li> 
                                         </ul>
                                     </nav>
                                 </div>
@@ -132,49 +143,49 @@ font-family: 'Cairo';
     <!-- End header  -->
     <!-- Start menu -->
 
-        <section id="mu-menu">
-    <nav class="navbar navbar-default" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <!-- LOGO -->
-          <!-- TEXT BASED LOGO -->
-          <a class="navbar-brand" href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><img style="width:100px;margin-top:-5px;display:flex;" src="/public/uploads/<?php echo e($info['logo']); ?>"></a>
-          <!-- IMG BASED LOGO  -->
-          <!-- <a class="navbar-brand" href="index.html"><img src="/views/assets/img/logo.png" alt="logo"></a> -->
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
-            <li class="active" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><?php echo e($lang == 'en' ? 'Home' : 'الرئيسية'); ?></a></li>
-            <li class="dropdown" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo e($lang == 'en' ? ' Services ' : ' الخدمات '); ?><span class="fa fa-angle-down"></span></a>
-              <ul class="dropdown-menu" role="menu">
-                  <?php $__currentLoopData = $experiences; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $experience): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                   <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/service/<?php echo e(json_decode($experience['page'])->$lang); ?>"><img src="/public/<?php echo e($experience['icon']); ?>" style="width:30px;"> <?php echo e(json_decode($experience['title'])->$lang); ?></a></li>
-                  <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-              </ul>
-            </li>
-            <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en/blogs' : '/ar/blogs'); ?>"><?php echo e($lang == 'en' ? 'Blogs' : 'المقالات'); ?></a></li>
-            <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en/contact-us' : '/ar/contact-us'); ?>"><?php echo e($lang == 'en' ? 'Contact Us' : 'تواصل معنا'); ?></a></li>
-            <?php if($lang == 'en'): ?>
-                <li style="font-weight:bold;"><a href="/ar/home">عربى</a></li>
-            <?php elseif($lang == 'ar'): ?>
-                <li style="text-align:right;direction:rtl;font-weight:bold;"><a href="/en/home">English</a></li>
-            <?php endif; ?>
-            
-          </ul>
-        </div>
-        <!--/.nav-collapse -->
-      </div>
-    </nav>
-  </section>
-  <!-- End menu -->
+    <section id="mu-menu">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <!-- FOR MOBILE VIEW COLLAPSED BUTTON -->
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <!-- LOGO -->
+                    <!-- TEXT BASED LOGO -->
+                    <a class="navbar-brand" href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><img style="width:100px;margin-top:-5px;display:flex;" src="https://dashboard.qodeex.com/editor/imgs/company/<?php echo e($info['logo']); ?>"></a>
+                    <!-- IMG BASED LOGO  -->
+                    <!-- <a class="navbar-brand" href="index.html"><img src="/views/assets/img/logo.png" alt="logo"></a> -->
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul id="top-menu" class="nav navbar-nav navbar-right main-nav">
+                        <li class="active" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/home"><?php echo e($lang == 'en' ? 'Home' : 'الرئيسية'); ?></a></li>
+                        <li class="dropdown" style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo e($lang == 'en' ? ' Services ' : ' الخدمات '); ?><span class="fa fa-angle-down"></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <?php $__currentLoopData = $services; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $service): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en' : '/ar'); ?>/service/<?php echo e($service['service_id']); ?>"><img src="https://dashboard.qodeex.com/editor/imgs/services/<?php echo e($service['icon']); ?>" style="width:100px;"> <?php echo e($service['service_name_'.$lang]); ?></a></li>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </ul>
+                        </li>
+                        
+                        <li style="<?php echo e($lang == 'ar' ? 'text-align:right;direction:rtl;font-weight:bold;' : 'font-weight:bold;'); ?>"><a href="<?php echo e($lang == 'en' ? '/en/contact-us' : '/ar/contact-us'); ?>"><?php echo e($lang == 'en' ? 'Contact Us' : 'تواصل معنا'); ?></a></li>
+                        <?php if($lang == 'en'): ?>
+                        <li style="font-weight:bold;"><a href="/ar/home">عربى</a></li>
+                        <?php elseif($lang == 'ar'): ?>
+                        <li style="text-align:right;direction:rtl;font-weight:bold;"><a href="/en/home">English</a></li>
+                        <?php endif; ?>
+                        
+                    </ul>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </nav>
+    </section>
+    <!-- End menu -->
 
 
 
@@ -219,41 +230,43 @@ font-family: 'Cairo';
     <!-- Custom js -->
     <script src="/views/assets/js/custom.js"></script>
     <script>
-        $(document).ready(function(){
-            $('#sendMail').submit(function(e){
+        $(document).ready(function() {
+            $('#sendMail').submit(function(e) {
                 e.preventDefault();
                 $.ajax('/sendMail', {
-    dataType:'json',
-    type: 'POST',  // http method
-    data: $("form").serialize(),  // data to submit
-    success: function (data) {
-        $('#sendMail')[0].reset();
-        $('#fail').hide();
-        $('#success').text(data.message);
-        $('#success').show();
-    },
-    error: function (data) {
-        $('#success').hide();
-        $('#fail').text(data.responseJSON[0].message);
-        $('#fail').show();
-    }
-});
+                    dataType: 'json',
+                    type: 'POST', // http method
+                    data: $("form").serialize(), // data to submit
+                    success: function(data) {
+                        $('#sendMail')[0].reset();
+                        $('#fail').hide();
+                        $('#success').text(data.message);
+                        $('#success').show();
+                    },
+                    error: function(data) {
+                        $('#success').hide();
+                        $('#fail').text(data.responseJSON[0].message);
+                        $('#fail').show();
+                    }
+                });
             })
         })
     </script>
     <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/60094aa3c31c9117cb70ef54/default';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {},
+            Tawk_LoadStart = new Date();
+        (function() {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/60094aa3c31c9117cb70ef54/default';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+    <!--End of Tawk.to Script-->
 </body>
 
 </html><?php /**PATH /home/qodeex/zte.qodeex.com/views/layouts/app.blade.php ENDPATH**/ ?>
