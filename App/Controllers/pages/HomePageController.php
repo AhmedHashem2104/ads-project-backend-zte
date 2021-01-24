@@ -9,7 +9,7 @@ class HomePageController extends Controller
 
         $sliders = Slider::query()->orderBy('slider_id', 'DESC')->fetch();
 
-        $services = DB::rawQuery("SELECT * FROM services ORDER BY order_no DESC");
+        $services = DB::rawQuery("SELECT * FROM services ORDER BY order_no");
 
         $about = DB::rawOneQuery("SELECT * FROM ours WHERE our_id = 1");
 
