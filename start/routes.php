@@ -1,17 +1,45 @@
 <?php
 
-//pages
-Route::get('/:lang/home', 'pages/HomePageController.index');
+//Authentication
 
-Route::get('/:lang/service/:id', 'pages/ServicePageController.index');
+Route::post('/api/login' , 'AuthController.login');
 
-Route::get('/:lang/our/:id', 'pages/OurPageController.index');
+Route::post('/api/register' , 'AuthController.register');
 
+Route::get('/api/logout' , 'AuthController.logout');
 
-Route::get('/:lang/blogs', 'pages/BlogPageController.index');
+//Countries
 
-Route::get('/:lang/blog/:slug', 'pages/BlogPageController.blogOne');
+Route::get('/api/countries/all/:page' , 'CountriesController.paginate');
 
-Route::get('/:lang/contact-us', 'pages/ContactPageController.index');
+Route::get('/api/country/:id' , 'CountriesController.show');
 
-Route::post('/sendMail', 'pages/ContactPageController.sendMail');
+Route::post('/api/country' , 'CountriesController.store');
+
+Route::put('/api/country/:id' , 'CountriesController.update');
+
+Route::delete('/api/country/:id' , 'CountriesController.destroy');
+
+//Languages
+
+Route::get('/api/languages/all/:page' , 'LanguagesController.paginate');
+
+Route::get('/api/language/:id' , 'LanguagesController.show');
+
+Route::post('/api/language' , 'LanguagesController.store');
+
+Route::put('/api/language/:id' , 'LanguagesController.update');
+
+Route::delete('/api/language/:id' , 'LanguagesController.destroy');
+
+//Categories
+
+Route::get('/api/categories/all/:page' , 'CategoriesController.paginate');
+
+Route::get('/api/category/:id' , 'CategoriesController.show');
+
+Route::post('/api/category' , 'CategoriesController.store');
+
+Route::put('/api/category/:id' , 'CategoriesController.update');
+
+Route::delete('/api/category/:id' , 'CategoriesController.destroy');

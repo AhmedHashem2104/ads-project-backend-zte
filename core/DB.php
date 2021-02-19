@@ -395,9 +395,9 @@ class DB extends Database
       while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
         $data[] = $row;
       }
-      return array('num_pages' => $numpages, 'num_rows' => $numrows, 'previous_page' => $page - 1, 'current_page' => $page, 'next_page' => $page + 1, 'data' => $data);
+      return array('num_pages' => $numpages, 'num_rows' => $numrows, 'previous_page' => ($page <= 1) ? 1 : $page - 1, 'current_page' => $page, 'next_page' => $page + 1, 'data' => $data);
     } else {
-      return array();
+      return array('num_pages' => $numpages, 'num_rows' => $numrows, 'previous_page' => ($page <= 1) ? 1 : $page - 1, 'current_page' => $page, 'next_page' => $page + 1, 'data' => []);
     }
   }
   // Fetch All Data From Database.
@@ -521,6 +521,7 @@ class DB extends Database
   //Update One Or More Than One Row In Database.
   public function update($fields)
   {
+
     self::$instance['counter'] = 0;
 
     unset($fields->id);

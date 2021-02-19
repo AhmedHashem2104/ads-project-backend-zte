@@ -3,7 +3,7 @@
 class Auth extends Controller
 {
 
-    public function table()
+    public static function table()
     {
         return "users";
     }

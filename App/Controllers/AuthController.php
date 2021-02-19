@@ -27,7 +27,7 @@ class AuthController
 		}
 		$data = $user->save();
 		$token = $user->invoke($user->email, $request->input('password'));
-		return $response->json(array('user' => $data, 'token' => $token));
+		return $response->json(array('token' => $token));
 	}
 
 	public function login($response, $request, $auth)
@@ -48,6 +48,6 @@ class AuthController
 	public function logout($response, $request)
 	{
 		Auth::revoke();
-		return $response->json(array('message' => 'Token Revoked'));
+		return $response->json(array('message' => 'Token Revoked Successfully'));
 	}
 }

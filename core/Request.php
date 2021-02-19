@@ -9,7 +9,6 @@ class Request
 
   public static function validate($src, $rules = [])
   {
-
     if (is_object($src)) {
       $src = json_decode(json_encode($src), true);
     }
@@ -76,6 +75,8 @@ class Request
         break;
       }
     }
+    return (object)$src;
+
   }
 
   public static function validateAll($src, $rules = [])
@@ -210,10 +211,15 @@ class Request
         preg_match('/name=\"([^\"]*)\"[\n|\r]+([^\n\r].*)?\r$/s', $block, $matches);
       }
       if ($matches) {
-
-        $all->{$matches[1]} = $matches[2];
+        foreach($arr as $ar){
+          if ($ar === $matches[1])
+          $all->{$matches[1]} = $matches[2];
+        }
       } else {
-
+        foreach($arr as $ar){
+          if ($ar === $id)
+          $all->{$matches[1]} = $matches[2];
+        }
         $all->{$id} = $block;
       }
     }
@@ -225,7 +231,6 @@ class Request
     // Throw an exception if decoding failed
 
     if (is_array($object)) {
-
       foreach ($arr as $a) {
 
         foreach ($object as $key => $value) {
@@ -272,7 +277,6 @@ class Request
         }
       }
     }
-
     return $all;
   }
 

@@ -75,7 +75,7 @@ class Controller extends DB
         if ($data) {
             return $data;
         } else {
-            return array('status' => 0, 'message' => 'Not Found');
+             die(Response::status(400)->json(array('status' => 0, 'message' => 'Not Found')));
         }
     }
     // Select Using Specific Row Using Any Coloumn.

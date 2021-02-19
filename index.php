@@ -13,6 +13,7 @@ $dotenv->load();
 require_once __DIR__ . '/core/Database.php';
 
 require_once __DIR__ . '/core/DB.php';
+require_once __DIR__ . '/core/Response.php';
 
 require_once __DIR__ . '/core/Controller.php';
 
@@ -21,7 +22,6 @@ spl_autoload_register(function ($class) {
     require_once __DIR__ . '/App/Models/' . $model[0] . '.php';
 });
 
-require_once __DIR__ . '/core/Response.php';
 
 require_once __DIR__ . '/core/Request.php';
 

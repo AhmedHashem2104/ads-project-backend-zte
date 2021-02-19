@@ -2,7 +2,7 @@
 
 class Category extends Controller
 {
-    public function table()
+    public static function table()
     {
         return 'categories';
     }
